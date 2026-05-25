@@ -1,0 +1,19 @@
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { registerListRepositoriesTool } from "./tools/list-repositories.tool.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { registerGetRepositoryInfoTool } from "./tools/get-repository-info.tool.js";
+
+async function main() {
+    const server = new McpServer({
+        name: "github-mcp-server",
+        version: "1.0.0",
+    })
+
+    registerListRepositoriesTool(server) 
+    registerGetRepositoryInfoTool(server)
+
+    const transport = new StdioServerTransport();
+    await server.connect(transport)
+}
+
+main()
