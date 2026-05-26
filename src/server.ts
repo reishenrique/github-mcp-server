@@ -5,6 +5,7 @@ import { registerGetRepositoryInfoTool } from './tools/get-repository-info.tool.
 import { registerListPullRequestsTool } from './tools/list-pull-requests.tool.js';
 import { registerGetPullRequestDetailsTool } from './tools/get-pull-request-details.tool.js';
 import { registerSearchCommitsByPullRequestTool } from './tools/search-commits-by-pr.tool.js';
+import { registerGetPullRequestFilesTool } from './tools/get-pull-request-files.tool.js';
 
 async function startMcpServer() {
   const server = new McpServer({
@@ -17,6 +18,7 @@ async function startMcpServer() {
   registerListPullRequestsTool(server);
   registerGetPullRequestDetailsTool(server);
   registerSearchCommitsByPullRequestTool(server);
+  registerGetPullRequestFilesTool(server);
 
   const transport = new StdioServerTransport();
   await server.connect(transport);

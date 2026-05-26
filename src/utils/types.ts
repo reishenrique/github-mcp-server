@@ -5,7 +5,7 @@ export type PullRequestInfo = {
   };
 };
 
-export type PullRequestListOutput = {
+export type FormattedPullRequestListOutput = {
   title: string;
   from: string;
 }[];
@@ -87,6 +87,31 @@ export type FormattedCommitOutput = {
       total: number;
     };
   }>;
+};
+
+export type CommitFiles = {
+  sha: string;
+  filename: string;
+  status: string;
+  additions: number;
+  deletions: number;
+  changes: number;
+  blob_url?: string;
+  raw_url?: string;
+  contents_url?: string;
+  patch?: string;
+};
+
+export type FormattedCommitFile = Pick<
+  CommitFiles,
+  'sha' | 'status' | 'additions' | 'deletions' | 'changes'
+> & {
+  fileName: string;
+};
+
+export type FormattedCommitFilesOutput = {
+  totalFiles: number;
+  filesNames: FormattedCommitFile[];
 };
 
 export type MergeType = 'sync' | 'pull_request' | 'unknown' | 'none';
