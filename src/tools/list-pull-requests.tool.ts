@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { gitHubApi } from '../services/github.service.js';
-import { formatPullRequestOutput } from '../utils/formatters.js';
+import { formatPullRequestOutput } from '../utils/formatters.util.js';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp';
 
 const inputSchema = z.object({
