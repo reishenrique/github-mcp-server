@@ -1,10 +1,20 @@
 import { detectMergeType } from './detectMergeType.util.js';
-import { FormattedCommitOutput, GitHubPRCommit, PullRequestInfo } from './types.js';
+import {
+  FormattedCommitOutput,
+  GitHubPRCommit,
+  PullRequestListOutput,
+  PullRequestInfo,
+} from './types.js';
 
-export function formatPullRequestOutput(pullRequests: PullRequestInfo[]): string {
-  const formattedOutput = pullRequests
-    .map((pr) => `- ${pr.title} (from: ${pr.user.login})`)
-    .join('\n');
+export function formatPullRequestListOutput(
+  pullRequests: PullRequestInfo[],
+): PullRequestListOutput {
+  const formattedOutput = pullRequests.map((pr) => {
+    return {
+      title: pr.title,
+      from: pr.user.login,
+    };
+  });
 
   return formattedOutput;
 }

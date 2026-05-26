@@ -5,6 +5,11 @@ export type PullRequestInfo = {
   };
 };
 
+export type PullRequestListOutput = {
+  title: string;
+  from: string;
+}[];
+
 export type GitHubPRCommit = {
   url: string;
   sha: string;
