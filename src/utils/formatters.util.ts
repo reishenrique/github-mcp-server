@@ -2,13 +2,15 @@ import { detectMergeType } from './detectMergeType.util.js';
 import {
   FormattedCommitOutput,
   GitHubPRCommit,
-  PullRequestListOutput,
+  FormattedPullRequestListOutput,
   PullRequestInfo,
+  CommitFiles,
+  FormattedCommitFilesOutput,
 } from './types.js';
 
 export function formatPullRequestListOutput(
   pullRequests: PullRequestInfo[],
-): PullRequestListOutput {
+): FormattedPullRequestListOutput {
   const formattedOutput = pullRequests.map((pr) => {
     return {
       title: pr.title,
@@ -50,6 +52,24 @@ export function formatCommitsListOutput(
         url: commit.html_url,
         isMerge,
         mergeType: isMerge ? detectMergeType(message) : 'none',
+      };
+    }),
+  };
+}
+
+export function formatPullRequestFilesOutput(
+  commitFiles: CommitFiles[],
+): FormattedCommitFilesOutput {
+  return {
+    totalFiles: commitFiles.length,
+    filesNames: commitFiles.map((files: CommitFiles) => {
+      return {
+        sha: files.sha,
+        fileName: files.filename,
+        status: files.status,
+        additions: files.additions,
+        deletions: files.deletions,
+        changes: files.changes,
       };
     }),
   };
