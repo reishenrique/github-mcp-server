@@ -1,0 +1,86 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.4.15/schema.json",
+	"assist": {
+		"actions": {
+			"source": {
+				"organizeImports": "off"
+			}
+		}
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"suspicious": {
+				"noExplicitAny": "off",
+				"noPrototypeBuiltins": "off",
+				"noConfusingVoidType": "off",
+				"noImplicitAnyLet": "off",
+				"noAssignInExpressions": "warn",
+				"noDoubleEquals": "off",
+				"noGlobalIsNan": "off",
+				"noSelfCompare": "off",
+				"noMisleadingCharacterClass": "off",
+				"noShadowRestrictedNames": "off",
+				"noThenProperty": "off"
+			},
+			"correctness": {
+				"noUnusedImports": "warn",
+				"noVoidTypeReturn": "warn",
+				"noConstructorReturn": "warn",
+				"noUnsafeOptionalChaining": "off",
+				"noSwitchDeclarations": "off",
+				"noUnsafeFinally": "off",
+				"noEmptyPattern": "off"
+			},
+			"style": {
+				"useLiteralEnumMembers": "off",
+				"useImportType": "off",
+				"noParameterAssign": "off",
+				"useNodejsImportProtocol": "off",
+				"useExponentiationOperator": "warn",
+				"noUselessElse": "off",
+				"useSingleVarDeclarator": "warn",
+				"useDefaultParameterLast": "off",
+				"noNonNullAssertion": "warn",
+				"useEnumInitializers": "off"
+			},
+			"complexity": {
+				"noStaticOnlyClass": "off",
+				"noThisInStatic": "off",
+				"noBannedTypes": "off",
+				"noUselessConstructor": "off",
+				"noUselessCatch": "off",
+				"useLiteralKeys": "off",
+				"noExcessiveNestedTestSuites": "warn",
+				"noForEach": "off",
+				"noUselessTernary": "warn"
+			},
+			"performance": {
+				"noDelete": "warn",
+				"noAccumulatingSpread": "off"
+			}
+		}
+	},
+	"formatter": {
+		"enabled": true,
+		"formatWithErrors": false,
+		"attributePosition": "auto",
+		"indentStyle": "space",
+		"indentWidth": 2,
+		"lineEnding": "lf",
+		"lineWidth": 100
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "single",
+			"arrowParentheses": "always",
+			"bracketSpacing": true,
+			"quoteProperties": "asNeeded",
+			"semicolons": "always"
+		},
+		"parser": {
+			"unsafeParameterDecoratorsEnabled": true
+		}
+	}
+}
