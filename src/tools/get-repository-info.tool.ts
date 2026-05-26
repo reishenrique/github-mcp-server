@@ -1,5 +1,6 @@
 import z from 'zod';
 import { gitHubApi } from '../services/github.service.js';
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp';
 
 const inputSchema = z.object({
   owner: z.string(),
@@ -15,11 +16,14 @@ interface RepositoryInfo {
   defaultBranch: string;
 }
 
-export function registerGetRepositoryInfoTool(server: any) {
-  server.tool(
+export function registerGetRepositoryInfoTool(server: McpServer) {
+  server.registerTool(
     'get-repository',
-    'Given an owner and repository name, retrieves detailed information about a specific GitHub repository, including name, visibility, owner, URL, primary language and default branch.',
-    inputSchema.shape,
+    {
+      description:
+        'Given an owner and repository name, retrieves detailed information about a specific GitHub repository, including name, visibility, owner, URL, primary language and default branch.',
+      inputSchema: inputSchema.shape,
+    },
     async ({ owner, repositoryName }: z.infer<typeof inputSchema>) => {
       const response = await gitHubApi.get(`/repos/${owner}/${repositoryName}`);
       const data = response.data;
