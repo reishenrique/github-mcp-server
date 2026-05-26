@@ -8,19 +8,19 @@ const inputSchema = z.object({
   pullNumber: z.number(),
 });
 
-interface PullRequestDetails {
-  from: string;
-  url: string;
-  title: string;
-  description: string;
-  createdAt: Date;
-  isMerged: boolean;
-  mergedBy: string | null;
-  commits: number;
-  additions: number;
-  deletions: number;
-  changedFiles: number;
-}
+const outputSchema = z.object({
+  from: z.string(),
+  url: z.string(),
+  title: z.string(),
+  description: z.string().nullable(),
+  createdAt: z.string(),
+  isMerged: z.boolean(),
+  mergedBy: z.string().nullable(),
+  commits: z.number(),
+  additions: z.number(),
+  deletions: z.number(),
+  changedFiles: z.number(),
+});
 
 export async function registerGetPullRequestDetailsTool(server: McpServer) {
   server.registerTool(
@@ -28,13 +28,14 @@ export async function registerGetPullRequestDetailsTool(server: McpServer) {
     {
       description: 'Obtaining detailed information about a specific pull request',
       inputSchema: inputSchema.shape,
+      outputSchema: outputSchema.shape,
     },
-    async ({ owner, repositoryName, pullNumber }) => {
+    async ({ owner, repositoryName, pullNumber }: z.infer<typeof inputSchema>) => {
       const response = await gitHubApi.get(`/repos/${owner}/${repositoryName}/pulls/${pullNumber}`);
 
       const isMerged = response.data.merged;
 
-      const pullRequestDetails: PullRequestDetails = {
+      const pullRequestDetails: z.infer<typeof outputSchema> = {
         from: response.data.user.login,
         url: response.data.url,
         title: response.data.title,
@@ -49,6 +50,7 @@ export async function registerGetPullRequestDetailsTool(server: McpServer) {
       };
 
       return {
+        structuredContent: pullRequestDetails,
         content: [
           {
             type: 'text',
