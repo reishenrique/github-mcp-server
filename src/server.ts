@@ -4,6 +4,7 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { registerGetRepositoryInfoTool } from './tools/get-repository-info.tool.js';
 import { registerListPullRequestsTool } from './tools/list-pull-requests.tool.js';
 import { registerGetPullRequestDetailsTool } from './tools/get-pull-request-details.tool.js';
+import { registerSearchCommitsByPullRequestTool } from './tools/search-commits-by-pr.tool.js';
 
 async function startMcpServer() {
   const server = new McpServer({
@@ -15,6 +16,7 @@ async function startMcpServer() {
   registerGetRepositoryInfoTool(server);
   registerListPullRequestsTool(server);
   registerGetPullRequestDetailsTool(server);
+  registerSearchCommitsByPullRequestTool(server);
 
   const transport = new StdioServerTransport();
   await server.connect(transport);
