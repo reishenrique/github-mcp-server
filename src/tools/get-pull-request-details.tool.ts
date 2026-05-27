@@ -1,6 +1,7 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp';
 import { z } from 'zod';
 import { gitHubApi } from '../services/github.service.js';
+import { formatPullRequestDetailsOutput } from '../utils/formatters.util.js';
 
 const inputSchema = z.object({
   owner: z.string(),
@@ -35,19 +36,7 @@ export async function registerGetPullRequestDetailsTool(server: McpServer) {
 
       const isMerged = response.data.merged;
 
-      const pullRequestDetails: z.infer<typeof outputSchema> = {
-        from: response.data.user.login,
-        url: response.data.url,
-        title: response.data.title,
-        description: response.data.body,
-        createdAt: response.data.created_at,
-        isMerged,
-        mergedBy: isMerged ? (response.data.merged_by?.login ?? null) : null,
-        commits: response.data.commits,
-        additions: response.data.additions,
-        deletions: response.data.deletions,
-        changedFiles: response.data.changed_files,
-      };
+      const pullRequestDetails = formatPullRequestDetailsOutput(response.data, isMerged);
 
       return {
         structuredContent: pullRequestDetails,
