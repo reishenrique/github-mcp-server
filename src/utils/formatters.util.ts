@@ -10,6 +10,8 @@ import {
   PullRequestDataInfo,
   RepositoryData,
   FormattedRepositoryInfoOutput,
+  IssueData,
+  FormattedIssueDetailsOutput,
 } from './types.js';
 
 export function formatPullRequestListOutput(
@@ -113,4 +115,18 @@ export function formatGetRepositoryInfoOutput(
   };
 
   return repositoryInfo;
+}
+
+export function formatIssueDetailsOutput(issueData: IssueData): FormattedIssueDetailsOutput {
+  const formattedIssueDetailsOutput = {
+    issueUrl: issueData.url,
+    issueNumber: issueData.number,
+    repositoryUrl: issueData.repository_url,
+    title: issueData.title,
+    user: issueData.user.login,
+    state: issueData.state,
+    body: issueData.body,
+  };
+
+  return formattedIssueDetailsOutput;
 }
