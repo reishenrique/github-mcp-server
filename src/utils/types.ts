@@ -188,4 +188,22 @@ export type FormattedIssueDataOutput = {
   body: string;
 };
 
+export type CommentOnPullRequestData = {
+  url: string;
+  issue_url: string;
+  user: {
+    login: string;
+  };
+  created_at: string;
+  body: string;
+};
+
+export type FormattedCommentOnPullRequestOutput = {
+  pullRequestUrl: string;
+  issueUrl: string;
+  user: string;
+  createdAt: string;
+  body: string;
+};
+
 export type MergeType = 'sync' | 'pull_request' | 'unknown' | 'none';
