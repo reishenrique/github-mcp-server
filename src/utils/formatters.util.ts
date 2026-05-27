@@ -11,7 +11,7 @@ import {
   RepositoryData,
   FormattedRepositoryInfoOutput,
   IssueData,
-  FormattedIssueDetailsOutput,
+  FormattedIssueDataOutput,
 } from './types.js';
 
 export function formatPullRequestListOutput(
@@ -117,7 +117,7 @@ export function formatGetRepositoryInfoOutput(
   return repositoryInfo;
 }
 
-export function formatIssueDetailsOutput(issueData: IssueData): FormattedIssueDetailsOutput {
+export function formatIssueDetailsOutput(issueData: IssueData): FormattedIssueDataOutput {
   const formattedIssueDetailsOutput = {
     issueUrl: issueData.url,
     issueNumber: issueData.number,
