@@ -6,7 +6,7 @@ import { formatPullRequestDetailsOutput } from '../utils/formatters.util.js';
 const inputSchema = z.object({
   owner: z.string(),
   repositoryName: z.string(),
-  pullNumber: z.number(),
+  pullRequestNumber: z.number(),
 });
 
 const outputSchema = z.object({
@@ -31,8 +31,10 @@ export async function registerGetPullRequestDetailsTool(server: McpServer) {
       inputSchema: inputSchema.shape,
       outputSchema: outputSchema.shape,
     },
-    async ({ owner, repositoryName, pullNumber }: z.infer<typeof inputSchema>) => {
-      const response = await gitHubApi.get(`/repos/${owner}/${repositoryName}/pulls/${pullNumber}`);
+    async ({ owner, repositoryName, pullRequestNumber }: z.infer<typeof inputSchema>) => {
+      const response = await gitHubApi.get(
+        `/repos/${owner}/${repositoryName}/pulls/${pullRequestNumber}`,
+      );
 
       const isMerged = response.data.merged;
 
