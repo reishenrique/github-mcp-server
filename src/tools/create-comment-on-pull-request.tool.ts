@@ -1,11 +1,20 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp';
 import { z } from 'zod';
 import { gitHubApi } from '../services/github.service.js';
+import { formatCommentOnPullRequestOutput } from '../utils/formatters.util.js';
 
 const inputSchema = z.object({
   owner: z.string(),
   repositoryName: z.string(),
-  issueNumber: z.string(),
+  pullRequestNumber: z.number(),
+  body: z.string(),
+});
+
+const outputSchema = z.object({
+  pullRequestUrl: z.string(),
+  issueUrl: z.string(),
+  user: z.string(),
+  createdAt: z.string(),
   body: z.string(),
 });
 
@@ -15,23 +24,31 @@ export async function registerCreateCommentOnPullRequestTool(server: McpServer) 
     {
       description: 'Creates a comment on a specific pull request',
       inputSchema: inputSchema.shape,
+      outputSchema: outputSchema.shape,
     },
-    async ({ owner, repositoryName, issueNumber, body }: z.infer<typeof inputSchema>) => {
-      const response = await gitHubApi.post(
-        `/repos/${owner}/${repositoryName}/issues/${issueNumber}`,
-        {
-          body,
-        },
-      );
-
-      return {
-        content: [
+    async ({ owner, repositoryName, pullRequestNumber, body }: z.infer<typeof inputSchema>) => {
+      try {
+        const response = await gitHubApi.post(
+          `/repos/${owner}/${repositoryName}/issues/${pullRequestNumber}/comments`,
           {
-            type: 'text',
-            text: JSON.stringify(response.data),
+            body,
           },
-        ],
-      };
+        );
+
+        const formatCommentOnPullRequest = formatCommentOnPullRequestOutput(response.data);
+
+        return {
+          structuredContent: formatCommentOnPullRequest,
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify(formatCommentOnPullRequest, null, 2),
+            },
+          ],
+        };
+      } catch (error: any) {
+        throw error;
+      }
     },
   );
 }
