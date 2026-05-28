@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { gitHubApi } from '../services/github.service.js';
-import { formatPullRequestListOutput } from '../utils/formatters.util.js';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp';
+import { formatPullRequestListOutput } from '../formatters/list-pull-request.formatters.js';
 
 const inputSchema = z.object({
   owner: z.string(),

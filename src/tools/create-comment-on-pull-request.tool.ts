@@ -1,7 +1,7 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp';
 import { z } from 'zod';
 import { gitHubApi } from '../services/github.service.js';
-import { formatCommentOnPullRequestOutput } from '../utils/formatters.util.js';
+import { formatCreateCommentOnPullRequestOutput } from '../formatters/create-comment-on-pull-request.formatter.js';
 
 const inputSchema = z.object({
   owner: z.string(),
@@ -35,7 +35,7 @@ export async function registerCreateCommentOnPullRequestTool(server: McpServer) 
           },
         );
 
-        const formatCommentOnPullRequest = formatCommentOnPullRequestOutput(response.data);
+        const formatCommentOnPullRequest = formatCreateCommentOnPullRequestOutput(response.data);
 
         return {
           structuredContent: formatCommentOnPullRequest,
