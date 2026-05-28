@@ -5,7 +5,7 @@ export function formatPullRequestFilesOutput(
 ): FormattedCommitFilesOutput {
   return {
     totalFiles: commitFiles.length,
-    filesNames: commitFiles.map((files: CommitFiles) => {
+    files: commitFiles.map((files: CommitFiles) => {
       return {
         sha: files.sha,
         fileName: files.filename,
