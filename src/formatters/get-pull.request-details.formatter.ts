@@ -6,6 +6,7 @@ export function formatPullRequestDetailsOutput(
 ): FormattedPullRequestDetails {
   const pullRequestDetails = {
     from: pullRequestData.user.login,
+    number: pullRequestData.number,
     url: pullRequestData.url,
     title: pullRequestData.title,
     description: pullRequestData.body,
@@ -16,6 +17,7 @@ export function formatPullRequestDetailsOutput(
     additions: pullRequestData.additions,
     deletions: pullRequestData.deletions,
     changedFiles: pullRequestData.changed_files,
+    state: pullRequestData.state,
   };
 
   return pullRequestDetails;
