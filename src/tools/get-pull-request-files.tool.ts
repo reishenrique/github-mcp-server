@@ -1,12 +1,11 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp';
 import { z } from 'zod';
-import { gitHubApi } from '../services/github.service.js';
-import { formatPullRequestFilesOutput } from '../utils/formatters.util.js';
+import { getPullRequestFiles } from '../services/pull-requests.service.js';
 
 const inputSchema = z.object({
   owner: z.string(),
   repositoryName: z.string(),
-  pullNumber: z.number(),
+  pullRequestNumber: z.number(),
 });
 
 const outputSchema = z.object({
@@ -23,7 +22,7 @@ const outputSchema = z.object({
   ),
 });
 
-export async function registerGetPullRequestFilesTool(server: McpServer) {
+export function registerGetPullRequestFilesTool(server: McpServer) {
   server.registerTool(
     'get-pull-request-files',
     {
@@ -31,12 +30,8 @@ export async function registerGetPullRequestFilesTool(server: McpServer) {
       inputSchema: inputSchema.shape,
       outputSchema: outputSchema.shape,
     },
-    async ({ owner, repositoryName, pullNumber }: z.infer<typeof inputSchema>) => {
-      const response = await gitHubApi.get(
-        `/repos/${owner}/${repositoryName}/pulls/${pullNumber}/files`,
-      );
-
-      const pullRequestFiles = formatPullRequestFilesOutput(response.data);
+    async ({ owner, repositoryName, pullRequestNumber }: z.infer<typeof inputSchema>) => {
+      const pullRequestFiles = await getPullRequestFiles(owner, repositoryName, pullRequestNumber);
 
       return {
         structuredContent: pullRequestFiles,

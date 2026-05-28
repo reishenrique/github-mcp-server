@@ -86,6 +86,7 @@ export type FormattedCommitOutput = {
       deletions: number;
       total: number;
     };
+    mergeType?: string;
   }>;
 };
 
@@ -111,7 +112,7 @@ export type FormattedCommitFile = Pick<
 
 export type FormattedCommitFilesOutput = {
   totalFiles: number;
-  filesNames: FormattedCommitFile[];
+  files: FormattedCommitFile[];
 };
 
 export type PullRequestDataInfo = {
@@ -119,6 +120,7 @@ export type PullRequestDataInfo = {
     login: string;
     id: number;
   };
+  number: number;
   url: string;
   title: string;
   body: string;
@@ -131,10 +133,12 @@ export type PullRequestDataInfo = {
   additions: number;
   deletions: number;
   changed_files: number;
+  state: string;
 };
 
 export type FormattedPullRequestDetails = {
   from: string;
+  number: number;
   url: string;
   title: string;
   description: string | null;
@@ -145,6 +149,7 @@ export type FormattedPullRequestDetails = {
   additions: number;
   deletions: number;
   changedFiles: number;
+  state: string;
 };
 
 export type RepositoryData = {

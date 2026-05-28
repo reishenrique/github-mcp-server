@@ -1,7 +1,7 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp';
 import { z } from 'zod';
 import { gitHubApi } from '../services/github.service.js';
-import { formatIssueDetailsOutput } from '../utils/formatters.util.js';
+import { formatIssueDetailsOutput } from '../formatters/create-issue.formatter.js';
 
 const inputSchema = z.object({
   owner: z.string(),

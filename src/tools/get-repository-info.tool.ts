@@ -1,7 +1,6 @@
 import z from 'zod';
-import { gitHubApi } from '../services/github.service.js';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp';
-import { formatGetRepositoryInfoOutput } from '../utils/formatters.util.js';
+import { getRepositoryInfo } from '../services/repository-info.service.js';
 
 const inputSchema = z.object({
   owner: z.string(),
@@ -27,9 +26,7 @@ export function registerGetRepositoryInfoTool(server: McpServer) {
       outputSchema: outputSchema.shape,
     },
     async ({ owner, repositoryName }: z.infer<typeof inputSchema>) => {
-      const response = await gitHubApi.get(`/repos/${owner}/${repositoryName}`);
-
-      const repositoryInfo = formatGetRepositoryInfoOutput(response.data);
+      const repositoryInfo = await getRepositoryInfo(owner, repositoryName);
 
       return {
         structuredContent: repositoryInfo,

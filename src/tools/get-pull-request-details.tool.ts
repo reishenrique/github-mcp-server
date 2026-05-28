@@ -1,7 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp';
 import { z } from 'zod';
-import { gitHubApi } from '../services/github.service.js';
-import { formatPullRequestDetailsOutput } from '../utils/formatters.util.js';
+import { getPullRequestDetails } from '../services/pull-requests.service.js';
 
 const inputSchema = z.object({
   owner: z.string(),
@@ -23,7 +22,7 @@ const outputSchema = z.object({
   changedFiles: z.number(),
 });
 
-export async function registerGetPullRequestDetailsTool(server: McpServer) {
+export function registerGetPullRequestDetailsTool(server: McpServer) {
   server.registerTool(
     'get-pull-request-details',
     {
@@ -32,13 +31,11 @@ export async function registerGetPullRequestDetailsTool(server: McpServer) {
       outputSchema: outputSchema.shape,
     },
     async ({ owner, repositoryName, pullRequestNumber }: z.infer<typeof inputSchema>) => {
-      const response = await gitHubApi.get(
-        `/repos/${owner}/${repositoryName}/pulls/${pullRequestNumber}`,
+      const pullRequestDetails = await getPullRequestDetails(
+        owner,
+        repositoryName,
+        pullRequestNumber,
       );
-
-      const isMerged = response.data.merged;
-
-      const pullRequestDetails = formatPullRequestDetailsOutput(response.data, isMerged);
 
       return {
         structuredContent: pullRequestDetails,

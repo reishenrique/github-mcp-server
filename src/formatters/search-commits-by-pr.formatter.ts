@@ -1,4 +1,4 @@
-import { detectMergeType } from '../utils/detectMergeType.util.js';
+import { detectMergeType } from '../utils/detect-merge-type.util.js';
 import { GitHubPRCommit, FormattedCommitOutput } from '../utils/types.js';
 
 export function formatCommitsListOutput(
