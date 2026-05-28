@@ -1,4 +1,4 @@
-import { MergeType } from './types.js';
+import { MergeType } from '../types/merge-type.type.js';
 
 export function detectMergeType(message: string): MergeType {
   const lowerCaseMessage = message.toLowerCase();
