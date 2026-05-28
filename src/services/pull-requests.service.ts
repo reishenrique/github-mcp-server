@@ -1,16 +1,14 @@
 import { formatPullRequestFilesOutput } from '../formatters/get-pull-request-files.formatters.js';
-import { formatPullRequestDetailsOutput } from '../formatters/get-pull.request-details.formatter.js';
+import { formatPullRequestDetailsOutput } from '../formatters/get-pull-request-details.formatter.js';
 import { formatCommitsListOutput } from '../formatters/search-commits-by-pr.formatter.js';
 import { formatSummarizePullRequestOutput } from '../formatters/summarize-pull-request.formatter.js';
 import { buildFileCategories } from '../utils/build-file-categories.utils.js';
 import { buildPullRequestInsights } from '../utils/build-pull-request-insights.util.js';
-import {
-  FormattedCommitFilesOutput,
-  FormattedCommitOutput,
-  FormattedPullRequestDetails,
-} from '../utils/types.js';
 import { gitHubApi } from './github.service.js';
 import { getRepositoryInfo } from './repository-info.service.js';
+import { FormattedPullRequestDetails } from '../types/get-pull-request-details.types.js';
+import { FormattedCommitFilesOutput } from '../types/get-pull-request-files.types.js';
+import { FormattedCommitOutput } from '../types/search-commits-by-pr.types.js';
 
 export async function getPullRequestDetails(
   owner: string,

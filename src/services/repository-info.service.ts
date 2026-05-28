@@ -1,5 +1,5 @@
 import { formatGetRepositoryInfoOutput } from '../formatters/get-repository-info.formatter.js';
-import { FormattedRepositoryInfoOutput } from '../utils/types.js';
+import { FormattedRepositoryInfoOutput } from '../types/get-repository-info.types.js';
 import { gitHubApi } from './github.service.js';
 
 export async function getRepositoryInfo(
