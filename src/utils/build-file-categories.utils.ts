@@ -1,4 +1,4 @@
-type FileCategories = {
+export type FileCategories = {
   sourceFiles?: number;
   testsFiles?: number;
   documentationFiles?: number;

@@ -1,6 +1,7 @@
 import { formatPullRequestFilesOutput } from '../formatters/get-pull-request-files.formatters.js';
 import { formatPullRequestDetailsOutput } from '../formatters/get-pull.request-details.formatter.js';
 import { formatCommitsListOutput } from '../formatters/search-commits-by-pr.formatter.js';
+import { formatSummarizePullRequestOutput } from '../formatters/summarize-pull-request.formatter.js';
 import { buildFileCategories } from '../utils/build-file-categories.utils.js';
 import { buildPullRequestInsights } from '../utils/build-pull-request-insights.util.js';
 import {
@@ -105,37 +106,18 @@ export async function summarizePullRequest(
     syncCommits,
   );
 
-  const summary = {
-    repository: {
-      owner: repositoryInfo.owner,
-      repositoryName: repositoryInfo.repositoryName,
-    },
-    pullRequest: {
-      number: pullRequestDetails.number,
-      title: pullRequestDetails.title,
-      state: pullRequestDetails.state,
-      author: pullRequestDetails.from,
-      createdAt: pullRequestDetails.createdAt,
-      merged: pullRequestDetails.isMerged,
-    },
-    metrics: {
-      totalFiles: pullRequestFiles.totalFiles,
-      totalCommits: commitsByPullRequest.total,
-      additions: pullRequestDetails.additions,
-      deletions: pullRequestDetails.deletions,
-      changes: pullRequestDetails.changedFiles,
-    },
+  const summary = formatSummarizePullRequestOutput(
+    repositoryInfo,
+    pullRequestDetails,
+    pullRequestFiles,
+    commitsByPullRequest,
     changedFiles,
     fileCategories,
-    commitsInsights: {
-      mergeCommits,
-      syncCommits,
-      featureCommits,
-    },
-    summary: `This pull request modifies ${pullRequestFiles.totalFiles} files and includes ${commitsByPullRequest.total} commits related to "${pullRequestDetails.title}"`,
-    risks,
-    recommendations,
-  };
+    mergeCommits,
+    syncCommits,
+    featureCommits,
+    { risks, recommendations },
+  );
 
   return summary;
 }
