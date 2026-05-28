@@ -1,5 +1,5 @@
+import { GitHubPRCommit, FormattedCommitOutput } from '../types/search-commits-by-pr.types.js';
 import { detectMergeType } from '../utils/detect-merge-type.util.js';
-import { GitHubPRCommit, FormattedCommitOutput } from '../utils/types.js';
 
 export function formatCommitsListOutput(
   owner: string,

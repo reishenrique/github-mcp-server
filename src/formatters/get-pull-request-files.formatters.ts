@@ -1,4 +1,4 @@
-import { CommitFiles, FormattedCommitFilesOutput } from '../utils/types.js';
+import { CommitFiles, FormattedCommitFilesOutput } from '../types/get-pull-request-files.types.js';
 
 export function formatPullRequestFilesOutput(
   commitFiles: CommitFiles[],

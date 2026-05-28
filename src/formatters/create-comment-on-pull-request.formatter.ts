@@ -1,4 +1,7 @@
-import { CommentOnPullRequestData, FormattedCommentOnPullRequestOutput } from '../utils/types.js';
+import {
+  CommentOnPullRequestData,
+  FormattedCommentOnPullRequestOutput,
+} from '../types/create-comment-on-pull-request.types.js';
 
 export function formatCreateCommentOnPullRequestOutput(
   commentData: CommentOnPullRequestData,

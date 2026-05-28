@@ -1,4 +1,7 @@
-import { PullRequestDataInfo, FormattedPullRequestDetails } from '../utils/types.js';
+import {
+  FormattedPullRequestDetails,
+  PullRequestDataInfo,
+} from '../types/get-pull-request-details.types.js';
 
 export function formatPullRequestDetailsOutput(
   pullRequestData: PullRequestDataInfo,

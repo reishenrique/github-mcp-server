@@ -1,4 +1,7 @@
-import { RepositoryData, FormattedRepositoryInfoOutput } from '../utils/types.js';
+import {
+  RepositoryData,
+  FormattedRepositoryInfoOutput,
+} from '../types/get-repository-info.types.js';
 
 export function formatGetRepositoryInfoOutput(
   repositoryData: RepositoryData,

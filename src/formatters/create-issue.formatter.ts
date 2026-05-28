@@ -1,4 +1,4 @@
-import { FormattedIssueDataOutput, IssueData } from '../utils/types.js';
+import { FormattedIssueDataOutput, IssueData } from '../types/create-issue.types.js';
 
 export function formatIssueDetailsOutput(issueData: IssueData): FormattedIssueDataOutput {
   const formattedIssueDetailsOutput = {
