@@ -8,6 +8,7 @@ import { registerSearchCommitsByPullRequestTool } from './tools/search-commits-b
 import { registerGetPullRequestFilesTool } from './tools/get-pull-request-files.tool.js';
 import { registerCreateIssueTool } from './tools/create-issue.tool.js';
 import { registerCreateCommentOnPullRequestTool } from './tools/create-comment-on-pull-request.tool.js';
+import { registerGenerateSummaryPullRequestTool } from './tools/generate-summary-pull-request.tool.js';
 
 async function startMcpServer() {
   const server = new McpServer({
@@ -23,6 +24,7 @@ async function startMcpServer() {
   registerGetPullRequestFilesTool(server);
   registerCreateIssueTool(server);
   registerCreateCommentOnPullRequestTool(server);
+  registerGenerateSummaryPullRequestTool(server);
 
   const transport = new StdioServerTransport();
   await server.connect(transport);
