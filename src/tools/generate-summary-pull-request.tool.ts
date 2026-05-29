@@ -1,6 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp';
+import { getOrCreateSummarizePullRequest } from '../services/pull-requests.service.js';
 import { z } from 'zod';
-import { summarizePullRequest } from '../services/pull-requests.service.js';
 
 const inputSchema = z.object({
   owner: z.string(),
@@ -62,7 +62,11 @@ export function registerGenerateSummaryPullRequestTool(server: McpServer) {
       repositoryName,
       pullRequestNumber,
     }: z.infer<typeof inputSchema>): Promise<any> => {
-      const summary = await summarizePullRequest(owner, repositoryName, pullRequestNumber);
+      const summary = await getOrCreateSummarizePullRequest(
+        owner,
+        repositoryName,
+        pullRequestNumber,
+      );
 
       return {
         structuredContent: summary,
