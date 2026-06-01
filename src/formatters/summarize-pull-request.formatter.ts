@@ -3,7 +3,7 @@ import { FormattedCommitFilesOutput } from '../types/get-pull-request-files.type
 import { FormattedRepositoryInfoOutput } from '../types/get-repository-info.types.js';
 import { FormattedCommitOutput } from '../types/search-commits-by-pr.types.js';
 import { FormatSummarizePullRequestOutput } from '../types/summarize-pull-request.type.js';
-import { FileCategories } from '../utils/build-file-categories.utils.js';
+import { FileCategories } from '../utils/builders/build-file-categories.utils.js';
 
 export function formatSummarizePullRequestOutput(
   repositoryInfo: FormattedRepositoryInfoOutput,

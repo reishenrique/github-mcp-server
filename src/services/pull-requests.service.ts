@@ -2,8 +2,8 @@ import { formatPullRequestFilesOutput } from '../formatters/get-pull-request-fil
 import { formatPullRequestDetailsOutput } from '../formatters/get-pull-request-details.formatter.js';
 import { formatCommitsListOutput } from '../formatters/search-commits-by-pr.formatter.js';
 import { formatSummarizePullRequestOutput } from '../formatters/summarize-pull-request.formatter.js';
-import { buildFileCategories } from '../utils/build-file-categories.utils.js';
-import { buildPullRequestInsights } from '../utils/build-pull-request-insights.util.js';
+import { buildFileCategories } from '../utils/builders/build-file-categories.utils.js';
+import { buildPullRequestInsights } from '../utils/builders/build-pull-request-insights.util.js';
 import { gitHubApi } from './github.service.js';
 import { getRepositoryInfo } from './repository-info.service.js';
 import { FormattedPullRequestDetails } from '../types/get-pull-request-details.types.js';
@@ -11,7 +11,7 @@ import { FormattedCommitFilesOutput } from '../types/get-pull-request-files.type
 import { FormattedCommitOutput } from '../types/search-commits-by-pr.types.js';
 import { FormatSummarizePullRequestOutput } from '../types/summarize-pull-request.type.js';
 import { summaryPullRequestCache } from '../cache/summary-pull-request.cache.js';
-import { buildSummaryPullRequestCacheKey } from '../utils/build-summary-pull-request-cache-key.util.js';
+import { buildSummaryPullRequestCacheKey } from '../utils/builders/build-summary-pull-request-cache-key.util.js';
 
 export async function getPullRequestDetails(
   owner: string,
