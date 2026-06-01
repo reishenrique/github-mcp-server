@@ -1,10 +1,10 @@
 export type FileCategories = {
-  sourceFiles?: number;
-  testsFiles?: number;
-  documentationFiles?: number;
-  ciFiles?: number;
-  configutarionFiles?: number;
-  contextFiles?: number;
+  sourceFiles: number;
+  testsFiles: number;
+  documentationFiles: number;
+  ciFiles: number;
+  configutarionFiles: number;
+  contextFiles: number;
 };
 
 export function buildFileCategories(changedFilesNames: string[]): FileCategories {
