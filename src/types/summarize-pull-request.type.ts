@@ -27,6 +27,7 @@ export type FormatSummarizePullRequestOutput = {
     configutarionFiles: number;
     contextFiles: number;
   };
+  impactSummary: string[];
   commitsInsights: {
     mergeCommits: number;
     syncCommits: number;

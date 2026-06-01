@@ -1,5 +1,5 @@
 import { SummarizePullRequestCacheValue } from '../cache/summary-pull-request.cache.js';
-import { buildPullRequestSummaryTemplate } from '../resource-templates/summary-pull-request.resource-template.js';
+import { buildPullRequestSummaryTemplate } from '../utils/templates/resources/summary-pull-request.resource-template.js';
 import { buildBulletList } from '../utils/builders/build-bullet-list.util.js';
 
 export function formatPullRequestSummaryResource({

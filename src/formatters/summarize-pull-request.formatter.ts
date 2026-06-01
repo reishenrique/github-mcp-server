@@ -12,6 +12,7 @@ export function formatSummarizePullRequestOutput(
   commitsByPullRequest: FormattedCommitOutput,
   changedFiles: string[],
   fileCategories: FileCategories,
+  impactSummary: string[],
   mergeCommits: number,
   syncCommits: number,
   featureCommits: number,
@@ -39,6 +40,7 @@ export function formatSummarizePullRequestOutput(
     },
     changedFiles,
     fileCategories,
+    impactSummary,
     commitsInsights: {
       mergeCommits,
       syncCommits,
