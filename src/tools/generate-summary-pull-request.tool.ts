@@ -31,12 +31,12 @@ const outputSchema = z.object({
   changedFiles: z.array(z.string()),
   fileCategories: z
     .object({
-      sourceFiles: z.number().optional(),
-      testsFiles: z.number().optional(),
-      documentationFiles: z.number().optional(),
-      ciFiles: z.number().optional(),
-      configutarionFiles: z.number().optional(),
-      contextFiles: z.number().optional(),
+      sourceFiles: z.number(),
+      testsFiles: z.number(),
+      documentationFiles: z.number(),
+      ciFiles: z.number(),
+      configutarionFiles: z.number(),
+      contextFiles: z.number(),
     })
     .optional(),
   commitsInsights: z.object({

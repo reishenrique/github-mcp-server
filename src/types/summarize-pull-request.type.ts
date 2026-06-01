@@ -20,12 +20,12 @@ export type FormatSummarizePullRequestOutput = {
   };
   changedFiles: string[];
   fileCategories: {
-    sourceFiles?: number;
-    testsFiles?: number;
-    documentationFiles?: number;
-    ciFiles?: number;
-    configutarionFiles?: number;
-    contextFiles?: number;
+    sourceFiles: number;
+    testsFiles: number;
+    documentationFiles: number;
+    ciFiles: number;
+    configutarionFiles: number;
+    contextFiles: number;
   };
   commitsInsights: {
     mergeCommits: number;
