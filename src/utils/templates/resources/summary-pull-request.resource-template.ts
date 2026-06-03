@@ -1,5 +1,5 @@
-import { FormatSummarizePullRequestOutput } from '../types/summarize-pull-request.type.js';
-import { buildPullRequestNarrativeSummary } from '../utils/builders/build-pull-request-narrative-summary.util.js';
+import { FormatSummarizePullRequestOutput } from '../../../types/summarize-pull-request.type.js';
+import { buildPullRequestNarrativeSummary } from '../../builders/build-pull-request-narrative-summary.util.js';
 
 export function buildPullRequestSummaryTemplate(data: {
   summary: FormatSummarizePullRequestOutput;
@@ -9,6 +9,7 @@ export function buildPullRequestSummaryTemplate(data: {
   hasMoreFiles: boolean;
   changedFiles: string;
   generatedAt: string;
+  impactSummary: string;
 }): string {
   return `
 Repository: ${data.summary.repository.owner}/${data.summary.repository.repositoryName}
@@ -41,6 +42,9 @@ File Categories:
 
 Summary:
 ${buildPullRequestNarrativeSummary(data.summary.pullRequest.title, data.summary.fileCategories)}
+
+Impact Summary:
+${data.impactSummary}
 
 Risks: 
 ${data.risks}
