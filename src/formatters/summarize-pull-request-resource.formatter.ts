@@ -19,6 +19,8 @@ export function formatPullRequestSummaryResource({
     .map((file) => `- ${file}`)
     .join('\n');
 
+  const impactSummary = buildBulletList(summary.impactSummary, 'There was no impact');
+
   return buildPullRequestSummaryTemplate({
     summary,
     risks,
@@ -27,5 +29,6 @@ export function formatPullRequestSummaryResource({
     hasMoreFiles,
     changedFiles,
     generatedAt,
+    impactSummary,
   });
 }
