@@ -13,7 +13,8 @@ export function registerSummaryPullRequestResource(server: McpServer) {
       },
     ),
     {
-      description: 'Provides a structured pull request summary resource',
+      description:
+        'Provides a structured pull request summary resource after they have been generated once by the tool',
     },
     async (uri: any, variables: any) => {
       const cacheKey = buildSummaryPullRequestCacheKey(
