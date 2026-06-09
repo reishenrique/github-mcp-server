@@ -1,15 +1,18 @@
 import { FormatSummarizePullRequestOutput } from '../../../types/summarize-pull-request.type.js';
+import { buildBulletList } from '../../builders/build-bullet-list.util.js';
 
 export function buildPullRequestDescriptionTemplate(data: {
   summary: FormatSummarizePullRequestOutput;
-  narrativeSummary: string;
+  impactSummary: string[];
   risks: string;
   recommendations: string;
 }) {
   return `
 ## 📋 Pull Request Summary
 
-${data.narrativeSummary}
+### Impact Summary
+
+${buildBulletList(data.impactSummary, 'No significant impact from this pull request')}
 
 ### Metrics
 
