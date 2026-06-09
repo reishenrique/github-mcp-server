@@ -39,6 +39,7 @@ const outputSchema = z.object({
       contextFiles: z.number(),
     })
     .optional(),
+  impactSummary: z.array(z.string()).optional(),
   commitsInsights: z.object({
     mergeCommits: z.number(),
     syncCommits: z.number(),

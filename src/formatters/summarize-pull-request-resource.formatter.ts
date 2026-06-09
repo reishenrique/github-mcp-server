@@ -1,5 +1,5 @@
 import { SummarizePullRequestCacheValue } from '../cache/summary-pull-request.cache.js';
-import { buildPullRequestSummaryTemplate } from '../resource-templates/summary-pull-request.resource-template.js';
+import { buildPullRequestSummaryTemplate } from '../utils/templates/resources/summary-pull-request.resource-template.js';
 import { buildBulletList } from '../utils/builders/build-bullet-list.util.js';
 
 export function formatPullRequestSummaryResource({
@@ -19,6 +19,8 @@ export function formatPullRequestSummaryResource({
     .map((file) => `- ${file}`)
     .join('\n');
 
+  const impactSummary = buildBulletList(summary.impactSummary, 'There was no impact');
+
   return buildPullRequestSummaryTemplate({
     summary,
     risks,
@@ -27,5 +29,6 @@ export function formatPullRequestSummaryResource({
     hasMoreFiles,
     changedFiles,
     generatedAt,
+    impactSummary,
   });
 }

@@ -7,20 +7,24 @@ export function buildPullRequestNarrativeSummary(
   const parts: string[] = [];
 
   if (fileCategories.sourceFiles > 0) {
-    parts.push('introduces changes to application source code');
+    parts.push('application source code');
   }
 
   if (fileCategories.testsFiles > 0) {
-    parts.push('includes test updates');
+    parts.push('test files');
   }
 
   if (fileCategories.documentationFiles > 0) {
-    parts.push('updates documentation');
+    parts.push('documentation');
   }
 
   if (fileCategories.ciFiles > 0) {
-    parts.push('modifies CI/CD configuration');
+    parts.push('CI/CD configuration');
   }
 
-  return `Pull request "${title}" ${parts.join(', ')}.`;
+  if (parts.length === 0) {
+    return `Pull request "${title} introduces repository changes`;
+  }
+
+  return `Pull request "${title}" includes modifications to ${parts.join(', ')}.`;
 }

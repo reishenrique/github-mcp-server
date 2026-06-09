@@ -1,7 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp';
 import { z } from 'zod';
-import { gitHubApi } from '../services/github.service.js';
-import { formatCreateCommentOnPullRequestOutput } from '../formatters/create-comment-on-pull-request.formatter.js';
+import { createCommentOnPullRequest } from '../services/pull-requests.service.js';
 
 const inputSchema = z.object({
   owner: z.string(),
@@ -27,28 +26,22 @@ export async function registerCreateCommentOnPullRequestTool(server: McpServer) 
       outputSchema: outputSchema.shape,
     },
     async ({ owner, repositoryName, pullRequestNumber, body }: z.infer<typeof inputSchema>) => {
-      try {
-        const response = await gitHubApi.post(
-          `/repos/${owner}/${repositoryName}/issues/${pullRequestNumber}/comments`,
+      const comment = await createCommentOnPullRequest(
+        owner,
+        repositoryName,
+        pullRequestNumber,
+        body,
+      );
+
+      return {
+        structuredContent: comment,
+        content: [
           {
-            body,
+            type: 'text',
+            text: JSON.stringify(comment, null, 2),
           },
-        );
-
-        const formatCommentOnPullRequest = formatCreateCommentOnPullRequestOutput(response.data);
-
-        return {
-          structuredContent: formatCommentOnPullRequest,
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(formatCommentOnPullRequest, null, 2),
-            },
-          ],
-        };
-      } catch (error: any) {
-        throw error;
-      }
+        ],
+      };
     },
   );
 }

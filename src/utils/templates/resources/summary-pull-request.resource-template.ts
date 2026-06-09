@@ -1,5 +1,5 @@
-import { FormatSummarizePullRequestOutput } from '../types/summarize-pull-request.type.js';
-import { buildPullRequestNarrativeSummary } from '../utils/builders/build-pull-request-narrative-summary.util.js';
+import { FormatSummarizePullRequestOutput } from '../../../types/summarize-pull-request.type.js';
+import { buildPullRequestNarrativeSummary } from '../../builders/build-pull-request-narrative-summary.util.js';
 
 export function buildPullRequestSummaryTemplate(data: {
   summary: FormatSummarizePullRequestOutput;
@@ -9,6 +9,7 @@ export function buildPullRequestSummaryTemplate(data: {
   hasMoreFiles: boolean;
   changedFiles: string;
   generatedAt: string;
+  impactSummary: string;
 }): string {
   return `
 Repository: ${data.summary.repository.owner}/${data.summary.repository.repositoryName}
@@ -19,6 +20,18 @@ State: ${data.summary.pullRequest.state}
 Merged: ${data.summary.pullRequest.merged ? 'yes' : 'no'}
 Author: ${data.summary.pullRequest.author}
 Created At: ${data.summary.pullRequest.createdAt}
+
+Impact Summary:
+${data.impactSummary}
+
+Summary:
+${buildPullRequestNarrativeSummary(data.summary.pullRequest.title, data.summary.fileCategories)}
+
+Risks: 
+${data.risks}
+
+Recommendations:
+${data.recommendations}
 
 Metrics:
 - Files changed: ${data.summary.metrics.totalFiles}
@@ -38,15 +51,6 @@ File Categories:
 - CI files: ${data.summary.fileCategories?.ciFiles}
 - Configuration files: ${data.summary.fileCategories?.configutarionFiles}
 - Context files: ${data.summary.fileCategories?.contextFiles}
-
-Summary:
-${buildPullRequestNarrativeSummary(data.summary.pullRequest.title, data.summary.fileCategories)}
-
-Risks: 
-${data.risks}
-
-Recommendations:
-${data.recommendations}
 
 Changed Files (showing ${Math.min(data.summary.changedFiles.length, data.maxFilesToShow)} of ${data.summary.changedFiles.length}):
 ${data.changedFiles}

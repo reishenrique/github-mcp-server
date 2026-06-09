@@ -12,6 +12,9 @@ import { FormattedCommitOutput } from '../types/search-commits-by-pr.types.js';
 import { FormatSummarizePullRequestOutput } from '../types/summarize-pull-request.type.js';
 import { summaryPullRequestCache } from '../cache/summary-pull-request.cache.js';
 import { buildSummaryPullRequestCacheKey } from '../utils/builders/build-summary-pull-request-cache-key.util.js';
+import { formatCreateCommentOnPullRequestOutput } from '../formatters/create-comment-on-pull-request.formatter.js';
+import { handleGitHubError } from '../utils/handlers/github-error-handler.util.js';
+import { buildPullRequestImpactSummary } from '../utils/builders/build-pull-request-affected-areas.util.js';
 
 export async function getPullRequestDetails(
   owner: string,
@@ -73,6 +76,28 @@ export async function getPullRequestCommits(
   }
 }
 
+export async function createCommentOnPullRequest(
+  owner: string,
+  repositoryName: string,
+  pullRequestNumber: number,
+  body: string,
+) {
+  try {
+    const response = await gitHubApi.post(
+      `/repos/${owner}/${repositoryName}/issues/${pullRequestNumber}/comments`,
+      {
+        body,
+      },
+    );
+
+    const formatCommentOnPullRequest = formatCreateCommentOnPullRequestOutput(response.data);
+
+    return formatCommentOnPullRequest;
+  } catch (error: any) {
+    handleGitHubError(error);
+  }
+}
+
 export async function summarizePullRequest(
   owner: string,
   repositoryName: string,
@@ -93,6 +118,7 @@ export async function summarizePullRequest(
   const changedFiles = pullRequestFiles.files.map((file) => file.fileName);
 
   const fileCategories = buildFileCategories(changedFiles);
+  const impactSummary = buildPullRequestImpactSummary(changedFiles);
 
   const mergeCommits = commitsByPullRequest.commits.filter((commit) => commit.isMerge).length;
   const syncCommits = commitsByPullRequest.commits.filter(
@@ -114,6 +140,7 @@ export async function summarizePullRequest(
     commitsByPullRequest,
     changedFiles,
     fileCategories,
+    impactSummary,
     mergeCommits,
     syncCommits,
     featureCommits,

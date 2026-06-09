@@ -10,6 +10,7 @@ import { registerCreateIssueTool } from './tools/create-issue.tool.js';
 import { registerCreateCommentOnPullRequestTool } from './tools/create-comment-on-pull-request.tool.js';
 import { registerGenerateSummaryPullRequestTool } from './tools/generate-summary-pull-request.tool.js';
 import { registerSummaryPullRequestResource } from './resources/summary-pull-request.resource.js';
+import { registerGeneratePullRequestDescriptionTool } from './tools/generate-pull-request-description.tool.js';
 
 async function startMcpServer() {
   const server = new McpServer({
@@ -27,6 +28,7 @@ async function startMcpServer() {
   registerCreateIssueTool(server);
   registerCreateCommentOnPullRequestTool(server);
   registerGenerateSummaryPullRequestTool(server);
+  registerGeneratePullRequestDescriptionTool(server);
 
   // Resources
   registerSummaryPullRequestResource(server);
