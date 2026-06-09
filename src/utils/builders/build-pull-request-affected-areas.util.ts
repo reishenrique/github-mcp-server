@@ -13,7 +13,7 @@ const impactMappings = [
   },
   {
     path: 'src/services/',
-    summary: 'Modified service layer',
+    summary: 'Added or modified service layer',
   },
   {
     path: 'src/tools/',
