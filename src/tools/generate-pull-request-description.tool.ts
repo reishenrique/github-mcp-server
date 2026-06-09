@@ -2,8 +2,8 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp';
 import { z } from 'zod';
 import { getOrCreateSummarizePullRequest } from '../services/pull-requests.service.js';
 import { buildPullRequestDescriptionTemplate } from '../utils/templates/tools/pull-request-description-template.tool-template.js';
-import { buildPullRequestNarrativeSummary } from '../utils/builders/build-pull-request-narrative-summary.util.js';
 import { buildBulletList } from '../utils/builders/build-bullet-list.util.js';
+import { buildPullRequestImpactSummary } from '../utils/builders/build-pull-request-affected-areas.util.js';
 
 const inputSchema = z.object({
   owner: z.string(),
@@ -26,17 +26,14 @@ export function registerGeneratePullRequestDescriptionTool(server: McpServer) {
         pullRequestNumber,
       );
 
-      const narrativeSummary = buildPullRequestNarrativeSummary(
-        summary.pullRequest.title,
-        summary.fileCategories,
-      );
+      const impactSummary = buildPullRequestImpactSummary(summary.changedFiles);
 
       const risks = buildBulletList(summary.risks, 'No significant risks detected');
       const recommendations = buildBulletList(summary.recommendations, 'No recommendations');
 
       const description = buildPullRequestDescriptionTemplate({
         summary,
-        narrativeSummary,
+        impactSummary,
         risks,
         recommendations,
       });
