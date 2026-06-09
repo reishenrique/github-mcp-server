@@ -1,5 +1,4 @@
 import { FormatSummarizePullRequestOutput } from '../../../types/summarize-pull-request.type.js';
-import { buildPullRequestNarrativeSummary } from '../../builders/build-pull-request-narrative-summary.util.js';
 
 export function buildPullRequestSummaryTemplate(data: {
   summary: FormatSummarizePullRequestOutput;
@@ -23,9 +22,6 @@ Created At: ${data.summary.pullRequest.createdAt}
 
 Impact Summary:
 ${data.impactSummary}
-
-Summary:
-${buildPullRequestNarrativeSummary(data.summary.pullRequest.title, data.summary.fileCategories)}
 
 Risks: 
 ${data.risks}
