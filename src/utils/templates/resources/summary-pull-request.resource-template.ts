@@ -21,6 +21,18 @@ Merged: ${data.summary.pullRequest.merged ? 'yes' : 'no'}
 Author: ${data.summary.pullRequest.author}
 Created At: ${data.summary.pullRequest.createdAt}
 
+Impact Summary:
+${data.impactSummary}
+
+Summary:
+${buildPullRequestNarrativeSummary(data.summary.pullRequest.title, data.summary.fileCategories)}
+
+Risks: 
+${data.risks}
+
+Recommendations:
+${data.recommendations}
+
 Metrics:
 - Files changed: ${data.summary.metrics.totalFiles}
 - Commits: ${data.summary.metrics.totalCommits}
@@ -39,18 +51,6 @@ File Categories:
 - CI files: ${data.summary.fileCategories?.ciFiles}
 - Configuration files: ${data.summary.fileCategories?.configutarionFiles}
 - Context files: ${data.summary.fileCategories?.contextFiles}
-
-Summary:
-${buildPullRequestNarrativeSummary(data.summary.pullRequest.title, data.summary.fileCategories)}
-
-Impact Summary:
-${data.impactSummary}
-
-Risks: 
-${data.risks}
-
-Recommendations:
-${data.recommendations}
 
 Changed Files (showing ${Math.min(data.summary.changedFiles.length, data.maxFilesToShow)} of ${data.summary.changedFiles.length}):
 ${data.changedFiles}
