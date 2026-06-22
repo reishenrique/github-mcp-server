@@ -18,7 +18,7 @@ import {
   getPullRequestCommitsFromGithub,
   getPullRequestDetailsFromGithub,
   getPullRequestFilesFromGithub,
-} from '../clients/github.client.js';
+} from '../integrations/github.integration.js';
 
 export async function getPullRequestDetails(
   owner: string,
