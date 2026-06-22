@@ -1,7 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp';
 import { z } from 'zod';
-import { gitHubApi } from '../services/github.service.js';
-import { formatIssueDetailsOutput } from '../formatters/create-issue.formatter.js';
+import { createIssue } from '../services/repositories.service.js';
 
 const inputSchema = z.object({
   owner: z.string(),
@@ -30,19 +29,14 @@ export function registerCreateIssueTool(server: McpServer) {
     },
     async ({ owner, repositoryName, issueTitle, body }: z.infer<typeof inputSchema>) => {
       try {
-        const response = await gitHubApi.post(`/repos/${owner}/${repositoryName}/issues`, {
-          title: issueTitle,
-          body,
-        });
-
-        const issueDetails = formatIssueDetailsOutput(response.data);
+        const response = await createIssue(owner, repositoryName, issueTitle, body);
 
         return {
-          structuredContent: issueDetails,
+          structuredContent: response,
           content: [
             {
               type: 'text',
-              text: JSON.stringify(issueDetails, null, 2),
+              text: JSON.stringify(response, null, 2),
             },
           ],
         };

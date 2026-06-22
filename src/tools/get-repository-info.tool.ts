@@ -1,6 +1,6 @@
 import z from 'zod';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp';
-import { getRepositoryInfo } from '../services/repository-info.service.js';
+import { getRepositoryInfo } from '../services/repositories.service.js';
 
 const inputSchema = z.object({
   owner: z.string(),

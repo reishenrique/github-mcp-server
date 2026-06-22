@@ -1,7 +1,6 @@
 import { z } from 'zod';
-import { gitHubApi } from '../services/github.service.js';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp';
-import { formatPullRequestListOutput } from '../formatters/list-pull-request.formatters.js';
+import { listPullRequests } from '../services/pull-requests.service.js';
 
 const inputSchema = z.object({
   owner: z.string(),
@@ -26,8 +25,7 @@ export function registerListPullRequestsTool(server: McpServer) {
       outputSchema: outputSchema.shape,
     },
     async ({ owner, repositoryName }: z.infer<typeof inputSchema>) => {
-      const response = await gitHubApi.get(`/repos/${owner}/${repositoryName}/pulls`);
-      const pullRequests = formatPullRequestListOutput(response.data);
+      const pullRequests = await listPullRequests(owner, repositoryName);
 
       return {
         structuredContent: { pullRequests },
