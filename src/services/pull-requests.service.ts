@@ -15,7 +15,10 @@ import { buildSummaryPullRequestCacheKey } from '../utils/builders/build-summary
 import { formatCreateCommentOnPullRequestOutput } from '../formatters/create-comment-on-pull-request.formatter.js';
 import { handleGitHubError } from '../utils/handlers/github-error-handler.util.js';
 import { buildPullRequestImpactSummary } from '../utils/builders/build-pull-request-affected-areas.util.js';
-import { getPullRequestDetailsFromGithub } from '../clients/github.client.js';
+import {
+  getPullRequestDetailsFromGithub,
+  getPullRequestFilesFromGitHub,
+} from '../clients/github.client.js';
 
 export async function getPullRequestDetails(
   owner: string,
@@ -45,11 +48,9 @@ export async function getPullRequestFiles(
   pullRequestNumber: number,
 ): Promise<FormattedCommitFilesOutput> {
   try {
-    const response = await gitHubApi.get(
-      `/repos/${owner}/${repositoryName}/pulls/${pullRequestNumber}/files`,
-    );
+    const response = await getPullRequestFilesFromGitHub(owner, repositoryName, pullRequestNumber);
 
-    const pullRequestFiles = formatPullRequestFilesOutput(response.data);
+    const pullRequestFiles = formatPullRequestFilesOutput(response);
 
     return pullRequestFiles;
   } catch (error: any) {
