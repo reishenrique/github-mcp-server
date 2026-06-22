@@ -49,4 +49,22 @@ export async function getPullRequestCommitsFromGithub(
   }
 }
 
-export async function createCommentOnPullRequest
+export async function createCommentOnPullRequestFromGithub(
+  owner: string,
+  repositoryName: string,
+  pullRequestNumber: number,
+  body: string,
+) {
+  try {
+    const response = await gitHubApi.post(
+      `/repos/${owner}/${repositoryName}/issues/${pullRequestNumber}/comments`,
+      {
+        body,
+      },
+    );
+
+    return response.data;
+  } catch (error: unknown) {
+    handleGitHubError(error);
+  }
+}

@@ -16,6 +16,7 @@ import { formatCreateCommentOnPullRequestOutput } from '../formatters/create-com
 import { handleGitHubError } from '../utils/handlers/github-error-handler.util.js';
 import { buildPullRequestImpactSummary } from '../utils/builders/build-pull-request-affected-areas.util.js';
 import {
+  createCommentOnPullRequestFromGithub,
   getPullRequestCommitsFromGithub,
   getPullRequestDetailsFromGithub,
   getPullRequestFilesFromGithub,
@@ -65,20 +66,16 @@ export async function createCommentOnPullRequest(
   pullRequestNumber: number,
   body: string,
 ) {
-  try {
-    const response = await gitHubApi.post(
-      `/repos/${owner}/${repositoryName}/issues/${pullRequestNumber}/comments`,
-      {
-        body,
-      },
-    );
+  const response = await createCommentOnPullRequestFromGithub(
+    owner,
+    repositoryName,
+    pullRequestNumber,
+    body,
+  );
 
-    const formatCommentOnPullRequest = formatCreateCommentOnPullRequestOutput(response.data);
+  const formatCommentOnPullRequest = formatCreateCommentOnPullRequestOutput(response);
 
-    return formatCommentOnPullRequest;
-  } catch (error: any) {
-    handleGitHubError(error);
-  }
+  return formatCommentOnPullRequest;
 }
 
 export async function summarizePullRequest(
