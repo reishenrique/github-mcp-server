@@ -4,7 +4,6 @@ import { formatCommitsListOutput } from '../formatters/search-commits-by-pr.form
 import { formatSummarizePullRequestOutput } from '../formatters/summarize-pull-request.formatter.js';
 import { buildFileCategories } from '../utils/builders/build-file-categories.utils.js';
 import { buildPullRequestInsights } from '../utils/builders/build-pull-request-insights.util.js';
-import { gitHubApi } from './github.service.js';
 import { getRepositoryInfo } from './repository-info.service.js';
 import { FormattedPullRequestDetails } from '../types/get-pull-request-details.types.js';
 import { FormattedCommitFilesOutput } from '../types/get-pull-request-files.types.js';
@@ -13,7 +12,6 @@ import { FormatSummarizePullRequestOutput } from '../types/summarize-pull-reques
 import { summaryPullRequestCache } from '../cache/summary-pull-request.cache.js';
 import { buildSummaryPullRequestCacheKey } from '../utils/builders/build-summary-pull-request-cache-key.util.js';
 import { formatCreateCommentOnPullRequestOutput } from '../formatters/create-comment-on-pull-request.formatter.js';
-import { handleGitHubError } from '../utils/handlers/github-error-handler.util.js';
 import { buildPullRequestImpactSummary } from '../utils/builders/build-pull-request-affected-areas.util.js';
 import {
   createCommentOnPullRequestFromGithub,
