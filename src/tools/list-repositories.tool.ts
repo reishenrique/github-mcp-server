@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { gitHubApi } from '../services/github.service.js';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp';
+import { listRepositories } from '../services/repositories.service.js';
 
 const inputSchema = z.object({
   username: z.string(),
@@ -15,8 +15,7 @@ export function registerListRepositoriesTool(server: McpServer) {
       inputSchema: inputSchema.shape,
     },
     async ({ username }: z.infer<typeof inputSchema>) => {
-      const response = await gitHubApi.get(`/users/${username}/repos`);
-      const repos = response.data.map((repo: any) => `- ${repo.name}`).join('\n');
+      const repos = await listRepositories(username);
 
       return {
         content: [

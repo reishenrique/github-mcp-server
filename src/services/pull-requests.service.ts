@@ -4,8 +4,7 @@ import { formatCommitsListOutput } from '../formatters/search-commits-by-pr.form
 import { formatSummarizePullRequestOutput } from '../formatters/summarize-pull-request.formatter.js';
 import { buildFileCategories } from '../utils/builders/build-file-categories.utils.js';
 import { buildPullRequestInsights } from '../utils/builders/build-pull-request-insights.util.js';
-import { gitHubApi } from './github.service.js';
-import { getRepositoryInfo } from './repository-info.service.js';
+import { getRepositoryInfo } from './repositories.service.js';
 import { FormattedPullRequestDetails } from '../types/get-pull-request-details.types.js';
 import { FormattedCommitFilesOutput } from '../types/get-pull-request-files.types.js';
 import { FormattedCommitOutput } from '../types/search-commits-by-pr.types.js';
@@ -13,27 +12,27 @@ import { FormatSummarizePullRequestOutput } from '../types/summarize-pull-reques
 import { summaryPullRequestCache } from '../cache/summary-pull-request.cache.js';
 import { buildSummaryPullRequestCacheKey } from '../utils/builders/build-summary-pull-request-cache-key.util.js';
 import { formatCreateCommentOnPullRequestOutput } from '../formatters/create-comment-on-pull-request.formatter.js';
-import { handleGitHubError } from '../utils/handlers/github-error-handler.util.js';
 import { buildPullRequestImpactSummary } from '../utils/builders/build-pull-request-affected-areas.util.js';
+import { gitHubIntegration } from '../integrations/github.integration.js';
+import { formatPullRequestListOutput } from '../formatters/list-pull-request.formatters.js';
+import { FormattedPullRequestListOutput } from '../types/list-pull-request.types.js';
 
 export async function getPullRequestDetails(
   owner: string,
   repositoryName: string,
   pullRequestNumber: number,
 ): Promise<FormattedPullRequestDetails> {
-  try {
-    const response = await gitHubApi.get(
-      `/repos/${owner}/${repositoryName}/pulls/${pullRequestNumber}`,
-    );
+  const response = await gitHubIntegration.pullRequests.getPullRequestDetails(
+    owner,
+    repositoryName,
+    pullRequestNumber,
+  );
 
-    const isMerged = response.data.merged;
+  const isMerged = response.merged;
 
-    const pullRequestDetails = formatPullRequestDetailsOutput(response.data, isMerged);
+  const pullRequestDetails = formatPullRequestDetailsOutput(response, isMerged);
 
-    return pullRequestDetails;
-  } catch (error: any) {
-    throw error;
-  }
+  return pullRequestDetails;
 }
 
 export async function getPullRequestFiles(
@@ -41,17 +40,15 @@ export async function getPullRequestFiles(
   repositoryName: string,
   pullRequestNumber: number,
 ): Promise<FormattedCommitFilesOutput> {
-  try {
-    const response = await gitHubApi.get(
-      `/repos/${owner}/${repositoryName}/pulls/${pullRequestNumber}/files`,
-    );
+  const response = await gitHubIntegration.pullRequests.getPullRequestFiles(
+    owner,
+    repositoryName,
+    pullRequestNumber,
+  );
 
-    const pullRequestFiles = formatPullRequestFilesOutput(response.data);
+  const pullRequestFiles = formatPullRequestFilesOutput(response);
 
-    return pullRequestFiles;
-  } catch (error: any) {
-    throw error;
-  }
+  return pullRequestFiles;
 }
 
 export async function getPullRequestCommits(
@@ -59,21 +56,15 @@ export async function getPullRequestCommits(
   repositoryName: string,
   pullRequestNumber: number,
 ): Promise<FormattedCommitOutput> {
-  try {
-    const response = await gitHubApi.get(
-      `/repos/${owner}/${repositoryName}/pulls/${pullRequestNumber}/commits`,
-    );
-    const commits = formatCommitsListOutput(
-      owner,
-      repositoryName,
-      pullRequestNumber,
-      response.data,
-    );
+  const response = await gitHubIntegration.pullRequests.getPullRequestCommits(
+    owner,
+    repositoryName,
+    pullRequestNumber,
+  );
 
-    return commits;
-  } catch (error: any) {
-    throw error;
-  }
+  const commits = formatCommitsListOutput(owner, repositoryName, pullRequestNumber, response);
+
+  return commits;
 }
 
 export async function createCommentOnPullRequest(
@@ -82,20 +73,16 @@ export async function createCommentOnPullRequest(
   pullRequestNumber: number,
   body: string,
 ) {
-  try {
-    const response = await gitHubApi.post(
-      `/repos/${owner}/${repositoryName}/issues/${pullRequestNumber}/comments`,
-      {
-        body,
-      },
-    );
+  const response = await gitHubIntegration.pullRequests.createCommentOnPullRequest(
+    owner,
+    repositoryName,
+    pullRequestNumber,
+    body,
+  );
 
-    const formatCommentOnPullRequest = formatCreateCommentOnPullRequestOutput(response.data);
+  const formatCommentOnPullRequest = formatCreateCommentOnPullRequestOutput(response);
 
-    return formatCommentOnPullRequest;
-  } catch (error: any) {
-    handleGitHubError(error);
-  }
+  return formatCommentOnPullRequest;
 }
 
 export async function summarizePullRequest(
@@ -177,4 +164,15 @@ export async function getOrCreateSummarizePullRequest(
   saveSummaryPullRequestCache(cacheKey, summary);
 
   return summary;
+}
+
+export async function listPullRequests(
+  owner: string,
+  repositoryName: string,
+): Promise<FormattedPullRequestListOutput> {
+  const response = await gitHubIntegration.pullRequests.listPullRequests(owner, repositoryName);
+
+  const pullRequests = formatPullRequestListOutput(response);
+
+  return pullRequests;
 }
