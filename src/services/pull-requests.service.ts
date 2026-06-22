@@ -15,6 +15,7 @@ import { buildSummaryPullRequestCacheKey } from '../utils/builders/build-summary
 import { formatCreateCommentOnPullRequestOutput } from '../formatters/create-comment-on-pull-request.formatter.js';
 import { handleGitHubError } from '../utils/handlers/github-error-handler.util.js';
 import { buildPullRequestImpactSummary } from '../utils/builders/build-pull-request-affected-areas.util.js';
+import { getPullRequestDetailsFromGithub } from '../clients/github.client.js';
 
 export async function getPullRequestDetails(
   owner: string,
@@ -22,13 +23,15 @@ export async function getPullRequestDetails(
   pullRequestNumber: number,
 ): Promise<FormattedPullRequestDetails> {
   try {
-    const response = await gitHubApi.get(
-      `/repos/${owner}/${repositoryName}/pulls/${pullRequestNumber}`,
+    const pullRequest = await getPullRequestDetailsFromGithub(
+      owner,
+      repositoryName,
+      pullRequestNumber,
     );
 
-    const isMerged = response.data.merged;
+    const isMerged = pullRequest.merged;
 
-    const pullRequestDetails = formatPullRequestDetailsOutput(response.data, isMerged);
+    const pullRequestDetails = formatPullRequestDetailsOutput(pullRequest, isMerged);
 
     return pullRequestDetails;
   } catch (error: any) {
