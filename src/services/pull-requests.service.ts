@@ -16,8 +16,9 @@ import { formatCreateCommentOnPullRequestOutput } from '../formatters/create-com
 import { handleGitHubError } from '../utils/handlers/github-error-handler.util.js';
 import { buildPullRequestImpactSummary } from '../utils/builders/build-pull-request-affected-areas.util.js';
 import {
+  getPullRequestCommitsFromGithub,
   getPullRequestDetailsFromGithub,
-  getPullRequestFilesFromGitHub,
+  getPullRequestFilesFromGithub,
 } from '../clients/github.client.js';
 
 export async function getPullRequestDetails(
@@ -25,21 +26,13 @@ export async function getPullRequestDetails(
   repositoryName: string,
   pullRequestNumber: number,
 ): Promise<FormattedPullRequestDetails> {
-  try {
-    const pullRequest = await getPullRequestDetailsFromGithub(
-      owner,
-      repositoryName,
-      pullRequestNumber,
-    );
+  const response = await getPullRequestDetailsFromGithub(owner, repositoryName, pullRequestNumber);
 
-    const isMerged = pullRequest.merged;
+  const isMerged = response.merged;
 
-    const pullRequestDetails = formatPullRequestDetailsOutput(pullRequest, isMerged);
+  const pullRequestDetails = formatPullRequestDetailsOutput(response, isMerged);
 
-    return pullRequestDetails;
-  } catch (error: any) {
-    throw error;
-  }
+  return pullRequestDetails;
 }
 
 export async function getPullRequestFiles(
@@ -47,15 +40,11 @@ export async function getPullRequestFiles(
   repositoryName: string,
   pullRequestNumber: number,
 ): Promise<FormattedCommitFilesOutput> {
-  try {
-    const response = await getPullRequestFilesFromGitHub(owner, repositoryName, pullRequestNumber);
+  const response = await getPullRequestFilesFromGithub(owner, repositoryName, pullRequestNumber);
 
-    const pullRequestFiles = formatPullRequestFilesOutput(response);
+  const pullRequestFiles = formatPullRequestFilesOutput(response);
 
-    return pullRequestFiles;
-  } catch (error: any) {
-    throw error;
-  }
+  return pullRequestFiles;
 }
 
 export async function getPullRequestCommits(
@@ -63,21 +52,11 @@ export async function getPullRequestCommits(
   repositoryName: string,
   pullRequestNumber: number,
 ): Promise<FormattedCommitOutput> {
-  try {
-    const response = await gitHubApi.get(
-      `/repos/${owner}/${repositoryName}/pulls/${pullRequestNumber}/commits`,
-    );
-    const commits = formatCommitsListOutput(
-      owner,
-      repositoryName,
-      pullRequestNumber,
-      response.data,
-    );
+  const response = await getPullRequestCommitsFromGithub(owner, repositoryName, pullRequestNumber);
 
-    return commits;
-  } catch (error: any) {
-    throw error;
-  }
+  const commits = formatCommitsListOutput(owner, repositoryName, pullRequestNumber, response);
+
+  return commits;
 }
 
 export async function createCommentOnPullRequest(
