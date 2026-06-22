@@ -4,7 +4,7 @@ import { formatCommitsListOutput } from '../formatters/search-commits-by-pr.form
 import { formatSummarizePullRequestOutput } from '../formatters/summarize-pull-request.formatter.js';
 import { buildFileCategories } from '../utils/builders/build-file-categories.utils.js';
 import { buildPullRequestInsights } from '../utils/builders/build-pull-request-insights.util.js';
-import { getRepositoryInfo } from './repository-info.service.js';
+import { getRepositoryInfo } from './repositories.service.js';
 import { FormattedPullRequestDetails } from '../types/get-pull-request-details.types.js';
 import { FormattedCommitFilesOutput } from '../types/get-pull-request-files.types.js';
 import { FormattedCommitOutput } from '../types/search-commits-by-pr.types.js';
@@ -13,19 +13,20 @@ import { summaryPullRequestCache } from '../cache/summary-pull-request.cache.js'
 import { buildSummaryPullRequestCacheKey } from '../utils/builders/build-summary-pull-request-cache-key.util.js';
 import { formatCreateCommentOnPullRequestOutput } from '../formatters/create-comment-on-pull-request.formatter.js';
 import { buildPullRequestImpactSummary } from '../utils/builders/build-pull-request-affected-areas.util.js';
-import {
-  createCommentOnPullRequestFromGithub,
-  getPullRequestCommitsFromGithub,
-  getPullRequestDetailsFromGithub,
-  getPullRequestFilesFromGithub,
-} from '../integrations/github.integration.js';
+import { gitHubIntegration } from '../integrations/github.integration.js';
+import { formatPullRequestListOutput } from '../formatters/list-pull-request.formatters.js';
+import { FormattedPullRequestListOutput } from '../types/list-pull-request.types.js';
 
 export async function getPullRequestDetails(
   owner: string,
   repositoryName: string,
   pullRequestNumber: number,
 ): Promise<FormattedPullRequestDetails> {
-  const response = await getPullRequestDetailsFromGithub(owner, repositoryName, pullRequestNumber);
+  const response = await gitHubIntegration.pullRequests.getPullRequestDetails(
+    owner,
+    repositoryName,
+    pullRequestNumber,
+  );
 
   const isMerged = response.merged;
 
@@ -39,7 +40,11 @@ export async function getPullRequestFiles(
   repositoryName: string,
   pullRequestNumber: number,
 ): Promise<FormattedCommitFilesOutput> {
-  const response = await getPullRequestFilesFromGithub(owner, repositoryName, pullRequestNumber);
+  const response = await gitHubIntegration.pullRequests.getPullRequestFiles(
+    owner,
+    repositoryName,
+    pullRequestNumber,
+  );
 
   const pullRequestFiles = formatPullRequestFilesOutput(response);
 
@@ -51,7 +56,11 @@ export async function getPullRequestCommits(
   repositoryName: string,
   pullRequestNumber: number,
 ): Promise<FormattedCommitOutput> {
-  const response = await getPullRequestCommitsFromGithub(owner, repositoryName, pullRequestNumber);
+  const response = await gitHubIntegration.pullRequests.getPullRequestCommits(
+    owner,
+    repositoryName,
+    pullRequestNumber,
+  );
 
   const commits = formatCommitsListOutput(owner, repositoryName, pullRequestNumber, response);
 
@@ -64,7 +73,7 @@ export async function createCommentOnPullRequest(
   pullRequestNumber: number,
   body: string,
 ) {
-  const response = await createCommentOnPullRequestFromGithub(
+  const response = await gitHubIntegration.pullRequests.createCommentOnPullRequest(
     owner,
     repositoryName,
     pullRequestNumber,
@@ -155,4 +164,15 @@ export async function getOrCreateSummarizePullRequest(
   saveSummaryPullRequestCache(cacheKey, summary);
 
   return summary;
+}
+
+export async function listPullRequests(
+  owner: string,
+  repositoryName: string,
+): Promise<FormattedPullRequestListOutput> {
+  const response = await gitHubIntegration.pullRequests.listPullRequests(owner, repositoryName);
+
+  const pullRequests = formatPullRequestListOutput(response);
+
+  return pullRequests;
 }
