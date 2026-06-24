@@ -1,4 +1,4 @@
-import { SummarizePullRequestCacheValue } from '../cache/summary-pull-request.cache.js';
+import { SummarizePullRequestCacheValue } from '../cache/pull-request.cache.js';
 import { buildPullRequestSummaryTemplate } from '../utils/templates/resources/summary-pull-request.resource-template.js';
 import { buildBulletList } from '../utils/builders/build-bullet-list.util.js';
 

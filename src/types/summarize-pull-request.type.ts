@@ -1,38 +1,41 @@
-export type FormatSummarizePullRequestOutput = {
-  repository: {
-    owner: string;
-    repositoryName: string;
-  };
-  pullRequest: {
-    number: number;
-    title: string;
-    state: string;
-    author: string;
-    createdAt: string;
-    merged: boolean;
-  };
-  metrics: {
-    totalFiles: number;
-    totalCommits: number;
-    additions: number;
-    deletions: number;
-    changes: number;
-  };
+import { FileCategories } from '../utils/builders/build-file-categories.utils.js';
+
+export type Repository = {
+  owner: string;
+  repositoryName: string;
+};
+
+export type PullRequest = {
+  number: number;
+  title: string;
+  state: string;
+  author: string;
+  createdAt: string;
+  merged: boolean;
+};
+
+export type Metrics = {
+  totalFiles: number;
+  totalCommits: number;
+  additions: number;
+  deletions: number;
+  changes: number;
+};
+
+export type CommitsInsights = {
+  mergeCommits: number;
+  syncCommits: number;
+  featureCommits: number;
+};
+
+export type SummarizePullRequestOutput = {
+  repository: Repository;
+  pullRequest: PullRequest;
+  metrics: Metrics;
   changedFiles: string[];
-  fileCategories: {
-    sourceFiles: number;
-    testsFiles: number;
-    documentationFiles: number;
-    ciFiles: number;
-    configutarionFiles: number;
-    contextFiles: number;
-  };
+  fileCategories: FileCategories;
   impactSummary: string[];
-  commitsInsights: {
-    mergeCommits: number;
-    syncCommits: number;
-    featureCommits: number;
-  };
+  commitsInsights: CommitsInsights;
   summary: string;
   risks: string[];
   recommendations: string[];

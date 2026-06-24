@@ -2,7 +2,7 @@ import { FormattedPullRequestDetails } from '../types/get-pull-request-details.t
 import { FormattedCommitFilesOutput } from '../types/get-pull-request-files.types.js';
 import { FormattedRepositoryInfoOutput } from '../types/get-repository-info.types.js';
 import { FormattedCommitOutput } from '../types/search-commits-by-pr.types.js';
-import { FormatSummarizePullRequestOutput } from '../types/summarize-pull-request.type.js';
+import { SummarizePullRequestOutput } from '../types/summarize-pull-request.type.js';
 import { FileCategories } from '../utils/builders/build-file-categories.utils.js';
 
 export function formatSummarizePullRequestOutput(
@@ -17,7 +17,7 @@ export function formatSummarizePullRequestOutput(
   syncCommits: number,
   featureCommits: number,
   { risks, recommendations }: { risks: string[]; recommendations: string[] },
-): FormatSummarizePullRequestOutput {
+): SummarizePullRequestOutput {
   const summary = {
     repository: {
       owner: repositoryInfo.owner,
