@@ -1,8 +1,8 @@
-import { FormatSummarizePullRequestOutput } from '../../../types/summarize-pull-request.type.js';
+import { SummarizePullRequestOutput } from '../../../types/summarize-pull-request.type.js';
 import { buildBulletList } from '../../builders/build-bullet-list.util.js';
 
 export function buildPullRequestDescriptionTemplate(data: {
-  summary: FormatSummarizePullRequestOutput;
+  summary: SummarizePullRequestOutput;
   impactSummary: string[];
   risks: string;
   recommendations: string;
