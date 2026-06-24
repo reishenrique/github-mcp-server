@@ -8,14 +8,24 @@ import { getRepositoryInfo } from './repositories.service.js';
 import { FormattedPullRequestDetails } from '../types/get-pull-request-details.types.js';
 import { FormattedCommitFilesOutput } from '../types/get-pull-request-files.types.js';
 import { FormattedCommitOutput } from '../types/search-commits-by-pr.types.js';
-import { FormatSummarizePullRequestOutput } from '../types/summarize-pull-request.type.js';
-import { summaryPullRequestCache } from '../cache/summary-pull-request.cache.js';
-import { buildSummaryPullRequestCacheKey } from '../utils/builders/build-summary-pull-request-cache-key.util.js';
+import { SummarizePullRequestOutput } from '../types/summarize-pull-request.type.js';
+import {
+  PullRequestContextReviewValue,
+  pullRequestReviewContextCache,
+  summaryPullRequestCache,
+} from '../cache/pull-request.cache.js';
+import {
+  buildPullRequestReviewContextCacheKey,
+  buildSummaryPullRequestCacheKey,
+} from '../utils/builders/build-pull-request-cache-keys.util.js';
 import { formatCreateCommentOnPullRequestOutput } from '../formatters/create-comment-on-pull-request.formatter.js';
 import { buildPullRequestImpactSummary } from '../utils/builders/build-pull-request-affected-areas.util.js';
 import { gitHubIntegration } from '../integrations/github.integration.js';
 import { formatPullRequestListOutput } from '../formatters/list-pull-request.formatters.js';
 import { FormattedPullRequestListOutput } from '../types/list-pull-request.types.js';
+import { buildReviewFocus } from '../utils/builders/build-review-focus.util.js';
+import { buildReviewSignals } from '../utils/builders/build-review-signals.util.js';
+import { PullRequestReviewContextOutput } from '../types/pull-request-review-context.type.js';
 
 export async function getPullRequestDetails(
   owner: string,
@@ -137,10 +147,7 @@ export async function summarizePullRequest(
   return summary;
 }
 
-export function saveSummaryPullRequestCache(
-  cacheKey: string,
-  summary: FormatSummarizePullRequestOutput,
-) {
+export function saveSummaryPullRequestCache(cacheKey: string, summary: SummarizePullRequestOutput) {
   summaryPullRequestCache.set(cacheKey, { summary, generatedAt: new Date().toISOString() });
 }
 
@@ -152,7 +159,7 @@ export async function getOrCreateSummarizePullRequest(
   owner: string,
   repositoryName: string,
   pullRequestNumber: number,
-): Promise<FormatSummarizePullRequestOutput> {
+): Promise<SummarizePullRequestOutput> {
   const cacheKey = buildSummaryPullRequestCacheKey(owner, repositoryName, pullRequestNumber);
 
   const cachedSummary = getCachedSummaryPullRequest(cacheKey);
@@ -175,4 +182,57 @@ export async function listPullRequests(
   const pullRequests = formatPullRequestListOutput(response);
 
   return pullRequests;
+}
+
+export async function generatePullRequestReviewContext(
+  owner: string,
+  repositoryName: string,
+  pullRequestNumber: number,
+): Promise<PullRequestReviewContextOutput> {
+  const summary = await getOrCreateSummarizePullRequest(owner, repositoryName, pullRequestNumber);
+
+  const pullRequestTitle = summary.pullRequest.title;
+
+  const reviewFocus = buildReviewFocus(summary.impactSummary); // Focus of the pull request review based on impacts
+  const reviewSignals = buildReviewSignals(summary.fileCategories, summary.metrics); // These are observations inferred from metrics and structure
+
+  return { reviewFocus, reviewSignals, pullRequestNumber, pullRequestTitle };
+}
+
+export async function getOrCreatePullRequestReviewContext(
+  owner: string,
+  repositoryName: string,
+  pullRequestNumber: number,
+): Promise<PullRequestReviewContextOutput> {
+  const cacheKey = buildPullRequestReviewContextCacheKey(owner, repositoryName, pullRequestNumber);
+
+  const cachedReviewContext = getCachedPullRequestReviewContext(cacheKey);
+
+  if (cachedReviewContext) return cachedReviewContext.contextReview;
+
+  const reviewContext = await generatePullRequestReviewContext(
+    owner,
+    repositoryName,
+    pullRequestNumber,
+  );
+
+  savePullRequestReviewContextCache(cacheKey, reviewContext);
+
+  return reviewContext;
+}
+
+export function getCachedPullRequestReviewContext(
+  cachedKey: string,
+): PullRequestContextReviewValue | undefined {
+  return pullRequestReviewContextCache.get(cachedKey);
+}
+
+export function savePullRequestReviewContextCache(
+  cacheKey: string,
+  contextReview: PullRequestReviewContextOutput,
+): void {
+  pullRequestReviewContextCache.set(cacheKey, {
+    contextReview,
+    generatedAt: new Date().toISOString(),
+  });
 }
