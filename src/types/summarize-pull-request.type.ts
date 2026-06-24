@@ -28,7 +28,7 @@ export type CommitsInsights = {
   featureCommits: number;
 };
 
-export type FormatSummarizePullRequestOutput = {
+export type SummarizePullRequestOutput = {
   repository: Repository;
   pullRequest: PullRequest;
   metrics: Metrics;

@@ -1,6 +1,6 @@
 import { McpServer, ResourceTemplate } from '@modelcontextprotocol/sdk/server/mcp';
 import { getCachedSummaryPullRequest } from '../services/pull-requests.service.js';
-import { buildSummaryPullRequestCacheKey } from '../utils/builders/build-summary-pull-request-cache-key.util.js';
+import { buildSummaryPullRequestCacheKey } from '../utils/builders/build-pull-request-cache-keys.util.js';
 import { formatPullRequestSummaryResource } from '../formatters/summarize-pull-request-resource.formatter.js';
 
 export function registerSummaryPullRequestResource(server: McpServer) {
