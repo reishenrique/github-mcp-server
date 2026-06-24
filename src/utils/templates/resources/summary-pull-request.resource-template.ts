@@ -1,7 +1,7 @@
-import { FormatSummarizePullRequestOutput } from '../../../types/summarize-pull-request.type.js';
+import { SummarizePullRequestOutput } from '../../../types/summarize-pull-request.type.js';
 
 export function buildPullRequestSummaryTemplate(data: {
-  summary: FormatSummarizePullRequestOutput;
+  summary: SummarizePullRequestOutput;
   risks: string;
   recommendations: string;
   maxFilesToShow: number;
