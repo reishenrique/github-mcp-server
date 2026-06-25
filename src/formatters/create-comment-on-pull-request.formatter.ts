@@ -1,11 +1,11 @@
 import {
   CommentOnPullRequestData,
-  FormattedCommentOnPullRequestOutput,
+  CommentOnPullRequestOutput,
 } from '../types/create-comment-on-pull-request.types.js';
 
-export function formatCreateCommentOnPullRequestOutput(
+export function createCommentOnPullRequestOutput(
   commentData: CommentOnPullRequestData,
-): FormattedCommentOnPullRequestOutput {
+): CommentOnPullRequestOutput {
   const formattedCommentOnPullRequestOutput = {
     pullRequestUrl: commentData.url,
     issueUrl: commentData.issue_url,

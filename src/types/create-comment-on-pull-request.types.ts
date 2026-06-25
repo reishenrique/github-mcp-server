@@ -8,7 +8,7 @@ export type CommentOnPullRequestData = {
   body: string;
 };
 
-export type FormattedCommentOnPullRequestOutput = {
+export type CommentOnPullRequestOutput = {
   pullRequestUrl: string;
   issueUrl: string;
   user: string;

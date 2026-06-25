@@ -18,7 +18,7 @@ import {
   buildPullRequestReviewContextCacheKey,
   buildSummaryPullRequestCacheKey,
 } from '../utils/builders/build-pull-request-cache-keys.util.js';
-import { formatCreateCommentOnPullRequestOutput } from '../formatters/create-comment-on-pull-request.formatter.js';
+import { createCommentOnPullRequestOutput } from '../formatters/create-comment-on-pull-request.formatter.js';
 import { buildPullRequestImpactSummary } from '../utils/builders/build-pull-request-affected-areas.util.js';
 import { gitHubIntegration } from '../integrations/github.integration.js';
 import { formatPullRequestListOutput } from '../formatters/list-pull-request.formatters.js';
@@ -90,7 +90,7 @@ export async function createCommentOnPullRequest(
     body,
   );
 
-  const formatCommentOnPullRequest = formatCreateCommentOnPullRequestOutput(response);
+  const formatCommentOnPullRequest = createCommentOnPullRequestOutput(response);
 
   return formatCommentOnPullRequest;
 }
