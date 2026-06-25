@@ -208,7 +208,7 @@ export async function getOrCreatePullRequestReviewContext(
 
   const cachedReviewContext = getCachedPullRequestReviewContext(cacheKey);
 
-  if (cachedReviewContext) return cachedReviewContext.contextReview;
+  if (cachedReviewContext) return cachedReviewContext.reviewContext;
 
   const reviewContext = await generatePullRequestReviewContext(
     owner,
@@ -229,10 +229,10 @@ export function getCachedPullRequestReviewContext(
 
 export function savePullRequestReviewContextCache(
   cacheKey: string,
-  contextReview: PullRequestReviewContextOutput,
+  reviewContext: PullRequestReviewContextOutput,
 ): void {
   pullRequestReviewContextCache.set(cacheKey, {
-    contextReview,
+    reviewContext,
     generatedAt: new Date().toISOString(),
   });
 }

@@ -9,7 +9,7 @@ export type SummarizePullRequestCacheValue = {
 export const summaryPullRequestCache = new Map<string, SummarizePullRequestCacheValue>();
 
 export type PullRequestContextReviewValue = {
-  contextReview: PullRequestReviewContextOutput;
+  reviewContext: PullRequestReviewContextOutput;
   generatedAt: string;
 };
 
