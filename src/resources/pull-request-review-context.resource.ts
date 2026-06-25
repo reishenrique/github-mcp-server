@@ -1,6 +1,6 @@
 import { McpServer, ResourceTemplate } from '@modelcontextprotocol/sdk/server/mcp';
 import { getOrCreatePullRequestReviewContext } from '../services/pull-requests.service.js';
-import { formatPullRequestReviewContextResource } from '../formatters/pull-request-review-context-resource.formatter.js';
+import { pullRequestReviewContextResource } from '../formatters/pull-request-review-context-resource.formatter.js';
 
 export function registerPullRequestReviewContextResource(server: McpServer) {
   server.registerResource(
@@ -28,7 +28,7 @@ export function registerPullRequestReviewContextResource(server: McpServer) {
         contents: [
           {
             uri: uri.href,
-            text: formatPullRequestReviewContextResource({ reviewContext, generatedAt }),
+            text: pullRequestReviewContextResource({ reviewContext, generatedAt }),
           },
         ],
       };

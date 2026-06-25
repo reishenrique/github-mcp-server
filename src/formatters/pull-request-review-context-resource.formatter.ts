@@ -2,7 +2,7 @@ import { PullRequestContextReviewValue } from '../cache/pull-request.cache.js';
 import { buildBulletList } from '../utils/builders/build-bullet-list.util.js';
 import { buildPullRequestReviewContextResourceTemplate } from '../utils/templates/resources/pull-request-review-context.resource-template.js';
 
-export function formatPullRequestReviewContextResource({
+export function pullRequestReviewContextResource({
   reviewContext,
   generatedAt,
 }: PullRequestContextReviewValue): string {
