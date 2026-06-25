@@ -1,4 +1,4 @@
-export type CommitFiles = {
+export type CommitFilesData = {
   sha: string;
   filename: string;
   status: string;
@@ -11,14 +11,14 @@ export type CommitFiles = {
   patch?: string;
 };
 
-type FormattedCommitFile = Pick<
-  CommitFiles,
+type CommitFile = Pick<
+  CommitFilesData,
   'sha' | 'status' | 'additions' | 'deletions' | 'changes'
 > & {
   fileName: string;
 };
 
-export type FormattedCommitFilesOutput = {
+export type CommitFilesOutput = {
   totalFiles: number;
-  files: FormattedCommitFile[];
+  files: CommitFile[];
 };

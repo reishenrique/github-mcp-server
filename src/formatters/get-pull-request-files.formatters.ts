@@ -1,11 +1,9 @@
-import { CommitFiles, FormattedCommitFilesOutput } from '../types/get-pull-request-files.types.js';
+import { CommitFilesData, CommitFilesOutput } from '../types/get-pull-request-files.types.js';
 
-export function formatPullRequestFilesOutput(
-  commitFiles: CommitFiles[],
-): FormattedCommitFilesOutput {
+export function formatPullRequestFilesOutput(commitFiles: CommitFilesData[]): CommitFilesOutput {
   return {
     totalFiles: commitFiles.length,
-    files: commitFiles.map((files: CommitFiles) => {
+    files: commitFiles.map((files: CommitFilesData) => {
       return {
         sha: files.sha,
         fileName: files.filename,

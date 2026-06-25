@@ -6,7 +6,7 @@ import { buildFileCategories } from '../utils/builders/build-file-categories.uti
 import { buildPullRequestInsights } from '../utils/builders/build-pull-request-insights.util.js';
 import { getRepositoryInfo } from './repositories.service.js';
 import { PullRequestDetailsOutput } from '../types/get-pull-request-details.types.js';
-import { FormattedCommitFilesOutput } from '../types/get-pull-request-files.types.js';
+import { CommitFilesOutput } from '../types/get-pull-request-files.types.js';
 import { FormattedCommitOutput } from '../types/search-commits-by-pr.types.js';
 import { SummarizePullRequestOutput } from '../types/summarize-pull-request.type.js';
 import {
@@ -49,7 +49,7 @@ export async function getPullRequestFiles(
   owner: string,
   repositoryName: string,
   pullRequestNumber: number,
-): Promise<FormattedCommitFilesOutput> {
+): Promise<CommitFilesOutput> {
   const response = await gitHubIntegration.pullRequests.getPullRequestFiles(
     owner,
     repositoryName,
