@@ -1,6 +1,6 @@
 import { CommitFilesData, CommitFilesOutput } from '../types/get-pull-request-files.types.js';
 
-export function formatPullRequestFilesOutput(commitFiles: CommitFilesData[]): CommitFilesOutput {
+export function pullRequestFilesOutput(commitFiles: CommitFilesData[]): CommitFilesOutput {
   return {
     totalFiles: commitFiles.length,
     files: commitFiles.map((files: CommitFilesData) => {

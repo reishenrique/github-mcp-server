@@ -1,4 +1,4 @@
-import { formatPullRequestFilesOutput } from '../formatters/get-pull-request-files.formatters.js';
+import { pullRequestFilesOutput } from '../formatters/get-pull-request-files.formatters.js';
 import { pullRequestDetailsOutput } from '../formatters/get-pull-request-details.formatter.js';
 import { formatCommitsListOutput } from '../formatters/search-commits-by-pull-request.formatter.js';
 import { summarizePullRequestOutput } from '../formatters/summarize-pull-request.formatter.js';
@@ -56,7 +56,7 @@ export async function getPullRequestFiles(
     pullRequestNumber,
   );
 
-  const pullRequestFiles = formatPullRequestFilesOutput(response);
+  const pullRequestFiles = pullRequestFilesOutput(response);
 
   return pullRequestFiles;
 }
