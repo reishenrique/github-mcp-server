@@ -1,6 +1,6 @@
 import { McpServer, ResourceTemplate } from '@modelcontextprotocol/sdk/server/mcp';
 import { getOrCreateSummarizePullRequest } from '../services/pull-requests.service.js';
-import { formatPullRequestSummaryResource } from '../formatters/summarize-pull-request-resource.formatter.js';
+import { pullRequestSummaryResource } from '../formatters/summarize-pull-request-resource.formatter.js';
 
 export function registerSummaryPullRequestResource(server: McpServer) {
   server.registerResource(
@@ -28,7 +28,7 @@ export function registerSummaryPullRequestResource(server: McpServer) {
         contents: [
           {
             uri: uri.href,
-            text: formatPullRequestSummaryResource({ summary, generatedAt }),
+            text: pullRequestSummaryResource({ summary, generatedAt }),
           },
         ],
       };

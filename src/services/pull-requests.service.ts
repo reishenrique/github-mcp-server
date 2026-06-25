@@ -1,7 +1,7 @@
 import { formatPullRequestFilesOutput } from '../formatters/get-pull-request-files.formatters.js';
 import { pullRequestDetailsOutput } from '../formatters/get-pull-request-details.formatter.js';
 import { formatCommitsListOutput } from '../formatters/search-commits-by-pull-request.formatter.js';
-import { formatSummarizePullRequestOutput } from '../formatters/summarize-pull-request.formatter.js';
+import { summarizePullRequestOutput } from '../formatters/summarize-pull-request.formatter.js';
 import { buildFileCategories } from '../utils/builders/build-file-categories.utils.js';
 import { buildPullRequestInsights } from '../utils/builders/build-pull-request-insights.util.js';
 import { getRepositoryInfo } from './repositories.service.js';
@@ -130,7 +130,7 @@ export async function summarizePullRequest(
     syncCommits,
   );
 
-  const summary = formatSummarizePullRequestOutput(
+  const summary = summarizePullRequestOutput(
     repositoryInfo,
     pullRequestDetails,
     pullRequestFiles,

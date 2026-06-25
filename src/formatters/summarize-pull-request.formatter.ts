@@ -1,15 +1,15 @@
-import { FormattedPullRequestDetails } from '../types/get-pull-request-details.types.js';
-import { FormattedCommitFilesOutput } from '../types/get-pull-request-files.types.js';
-import { FormattedRepositoryInfoOutput } from '../types/get-repository-info.types.js';
-import { FormattedCommitOutput } from '../types/search-commits-by-pull-request.types.js';
+import { PullRequestDetailsOutput } from '../types/get-pull-request-details.types.js';
+import { CommitFilesOutput } from '../types/get-pull-request-files.types.js';
+import { RepositoryInfoOutput } from '../types/get-repository-info.types.js';
+import { PullRequestCommitOutput } from '../types/search-commits-by-pull-request.types.js';
 import { SummarizePullRequestOutput } from '../types/summarize-pull-request.type.js';
 import { FileCategories } from '../utils/builders/build-file-categories.utils.js';
 
-export function formatSummarizePullRequestOutput(
-  repositoryInfo: FormattedRepositoryInfoOutput,
-  pullRequestDetails: FormattedPullRequestDetails,
-  pullRequestFiles: FormattedCommitFilesOutput,
-  commitsByPullRequest: FormattedCommitOutput,
+export function summarizePullRequestOutput(
+  repositoryInfo: RepositoryInfoOutput,
+  pullRequestDetails: PullRequestDetailsOutput,
+  pullRequestFiles: CommitFilesOutput,
+  commitsByPullRequest: PullRequestCommitOutput,
   changedFiles: string[],
   fileCategories: FileCategories,
   impactSummary: string[],
