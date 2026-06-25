@@ -112,7 +112,7 @@ export async function summarizePullRequest(
     pullRequestNumber,
   );
 
-  const changedFiles = pullRequestFiles.files.map((file) => file.fileName);
+  const changedFiles = pullRequestFiles.filesNames.map((file) => file.fileName);
 
   const fileCategories = buildFileCategories(changedFiles);
   const impactSummary = buildPullRequestImpactSummary(changedFiles);

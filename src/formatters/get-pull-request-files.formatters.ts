@@ -3,7 +3,7 @@ import { CommitFilesData, CommitFilesOutput } from '../types/get-pull-request-fi
 export function pullRequestFilesOutput(commitFiles: CommitFilesData[]): CommitFilesOutput {
   return {
     totalFiles: commitFiles.length,
-    files: commitFiles.map((files: CommitFilesData) => {
+    filesNames: commitFiles.map((files: CommitFilesData) => {
       return {
         sha: files.sha,
         fileName: files.filename,

@@ -20,5 +20,5 @@ type CommitFile = Pick<
 
 export type CommitFilesOutput = {
   totalFiles: number;
-  files: CommitFile[];
+  filesNames: CommitFile[];
 };
