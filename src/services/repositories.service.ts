@@ -29,7 +29,7 @@ export async function createIssue(
     body,
   );
 
-  const issueDetails = issueDetailsOutput(response.data);
+  const issueDetails = issueDetailsOutput(response);
 
   return issueDetails;
 }
