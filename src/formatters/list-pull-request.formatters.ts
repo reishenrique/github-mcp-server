@@ -1,11 +1,6 @@
-import {
-  FormattedPullRequestListOutput,
-  PullRequestInfo,
-} from '../types/list-pull-request.types.js';
+import { PullRequestListDataOutput, PullRequestData } from '../types/list-pull-request.types.js';
 
-export function formatPullRequestListOutput(
-  pullRequests: PullRequestInfo[],
-): FormattedPullRequestListOutput {
+export function pullRequestListOutput(pullRequests: PullRequestData[]): PullRequestListDataOutput {
   const formattedOutput = pullRequests.map((pr) => {
     return {
       title: pr.title,

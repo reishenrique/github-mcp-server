@@ -1,11 +1,11 @@
-export type PullRequestInfo = {
+export type PullRequestData = {
   title: string;
   user: {
     login: string;
   };
 };
 
-export type FormattedPullRequestListOutput = {
+export type PullRequestListDataOutput = {
   title: string;
   from: string;
 }[];

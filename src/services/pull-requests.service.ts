@@ -21,8 +21,8 @@ import {
 import { createCommentOnPullRequestOutput } from '../formatters/create-comment-on-pull-request.formatter.js';
 import { buildPullRequestImpactSummary } from '../utils/builders/build-pull-request-affected-areas.util.js';
 import { gitHubIntegration } from '../integrations/github.integration.js';
-import { formatPullRequestListOutput } from '../formatters/list-pull-request.formatters.js';
-import { FormattedPullRequestListOutput } from '../types/list-pull-request.types.js';
+import { pullRequestListOutput } from '../formatters/list-pull-request.formatters.js';
+import { PullRequestListDataOutput } from '../types/list-pull-request.types.js';
 import { buildReviewFocus } from '../utils/builders/build-review-focus.util.js';
 import { buildReviewSignals } from '../utils/builders/build-review-signals.util.js';
 import { PullRequestReviewContextOutput } from '../types/pull-request-review-context.type.js';
@@ -176,10 +176,10 @@ export async function getOrCreateSummarizePullRequest(
 export async function listPullRequests(
   owner: string,
   repositoryName: string,
-): Promise<FormattedPullRequestListOutput> {
+): Promise<PullRequestListDataOutput> {
   const response = await gitHubIntegration.pullRequests.listPullRequests(owner, repositoryName);
 
-  const pullRequests = formatPullRequestListOutput(response);
+  const pullRequests = pullRequestListOutput(response);
 
   return pullRequests;
 }
