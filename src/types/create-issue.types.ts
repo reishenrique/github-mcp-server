@@ -10,7 +10,7 @@ export type IssueData = {
   number: number;
 };
 
-export type FormattedIssueDataOutput = {
+export type IssueDataOutput = {
   issueUrl: string;
   repositoryUrl: string;
   title: string;

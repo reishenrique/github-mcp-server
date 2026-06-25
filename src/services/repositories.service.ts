@@ -1,8 +1,8 @@
 import { gitHubApi } from '../config/github.config.js';
-import { formatIssueDetailsOutput } from '../formatters/create-issue.formatter.js';
+import { issueDetailsOutput } from '../formatters/create-issue.formatter.js';
 import { formatGetRepositoryInfoOutput } from '../formatters/get-repository-info.formatter.js';
 import { gitHubIntegration } from '../integrations/github.integration.js';
-import { FormattedIssueDataOutput } from '../types/create-issue.types.js';
+import { IssueDataOutput } from '../types/create-issue.types.js';
 import { FormattedRepositoryInfoOutput } from '../types/get-repository-info.types.js';
 
 export async function getRepositoryInfo(
@@ -21,7 +21,7 @@ export async function createIssue(
   repositoryName: string,
   issueTitle: string,
   body?: string,
-): Promise<FormattedIssueDataOutput> {
+): Promise<IssueDataOutput> {
   const response = await gitHubIntegration.issues.createIssue(
     owner,
     repositoryName,
@@ -29,7 +29,7 @@ export async function createIssue(
     body,
   );
 
-  const issueDetails = formatIssueDetailsOutput(response.data);
+  const issueDetails = issueDetailsOutput(response.data);
 
   return issueDetails;
 }

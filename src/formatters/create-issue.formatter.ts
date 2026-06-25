@@ -1,6 +1,6 @@
-import { FormattedIssueDataOutput, IssueData } from '../types/create-issue.types.js';
+import { IssueData, IssueDataOutput } from '../types/create-issue.types.js';
 
-export function formatIssueDetailsOutput(issueData: IssueData): FormattedIssueDataOutput {
+export function issueDetailsOutput(issueData: IssueData): IssueDataOutput {
   const formattedIssueDetailsOutput = {
     issueUrl: issueData.url,
     issueNumber: issueData.number,
