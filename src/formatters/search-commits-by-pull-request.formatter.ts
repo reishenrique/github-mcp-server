@@ -1,12 +1,15 @@
-import { GitHubPRCommit, FormattedCommitOutput } from '../types/search-commits-by-pr.types.js';
+import {
+  PullRequestCommitData,
+  PullRequestCommitOutput,
+} from '../types/search-commits-by-pr.types.js';
 import { detectMergeType } from '../utils/detect-merge-type.util.js';
 
 export function formatCommitsListOutput(
   owner: string,
   repositoryName: string,
   pullRequestNumber: number,
-  commits: GitHubPRCommit[],
-): FormattedCommitOutput {
+  commits: PullRequestCommitData[],
+): PullRequestCommitOutput {
   return {
     repository: {
       owner,
@@ -14,7 +17,7 @@ export function formatCommitsListOutput(
     },
     pullRequestNumber,
     total: commits.length,
-    commits: commits.map((commit: GitHubPRCommit) => {
+    commits: commits.map((commit: PullRequestCommitData) => {
       const message = commit.commit.message;
 
       const isMerge = message.startsWith('Merge');

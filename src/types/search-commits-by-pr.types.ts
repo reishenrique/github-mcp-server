@@ -1,4 +1,4 @@
-export type GitHubPRCommit = {
+export type PullRequestCommitData = {
   url: string;
   sha: string;
   node_id: string;
@@ -50,7 +50,7 @@ export type GitHubPRCommit = {
   }>;
 };
 
-export type FormattedCommitOutput = {
+export type PullRequestCommitOutput = {
   repository: {
     owner: string;
     name: string;
