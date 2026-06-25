@@ -3,6 +3,7 @@ export function buildPullRequestReviewContextResourceTemplate(data: {
   reviewSignals: string;
   pullRequestNumber: number;
   pullRequestTitle: string;
+  generatedAt: string;
 }): string {
   return `
 Pull Request #${data.pullRequestNumber}
@@ -13,5 +14,7 @@ ${data.reviewFocus}
 
 Review Signals: 
 ${data.reviewSignals}
+
+Generated at: ${data.generatedAt}
 `;
 }

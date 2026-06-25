@@ -22,11 +22,13 @@ export function registerPullRequestReviewContextResource(server: McpServer) {
         variables.pullRequestNumber,
       );
 
+      const generatedAt = new Date().toISOString();
+
       return {
         contents: [
           {
             uri: uri.href,
-            text: formatPullRequestReviewContextResource(reviewContext),
+            text: formatPullRequestReviewContextResource({ reviewContext, generatedAt }),
           },
         ],
       };
