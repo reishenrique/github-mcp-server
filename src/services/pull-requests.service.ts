@@ -1,11 +1,11 @@
 import { formatPullRequestFilesOutput } from '../formatters/get-pull-request-files.formatters.js';
-import { formatPullRequestDetailsOutput } from '../formatters/get-pull-request-details.formatter.js';
+import { pullRequestDetailsOutput } from '../formatters/get-pull-request-details.formatter.js';
 import { formatCommitsListOutput } from '../formatters/search-commits-by-pr.formatter.js';
 import { formatSummarizePullRequestOutput } from '../formatters/summarize-pull-request.formatter.js';
 import { buildFileCategories } from '../utils/builders/build-file-categories.utils.js';
 import { buildPullRequestInsights } from '../utils/builders/build-pull-request-insights.util.js';
 import { getRepositoryInfo } from './repositories.service.js';
-import { FormattedPullRequestDetails } from '../types/get-pull-request-details.types.js';
+import { PullRequestDetailsOutput } from '../types/get-pull-request-details.types.js';
 import { FormattedCommitFilesOutput } from '../types/get-pull-request-files.types.js';
 import { FormattedCommitOutput } from '../types/search-commits-by-pr.types.js';
 import { SummarizePullRequestOutput } from '../types/summarize-pull-request.type.js';
@@ -31,7 +31,7 @@ export async function getPullRequestDetails(
   owner: string,
   repositoryName: string,
   pullRequestNumber: number,
-): Promise<FormattedPullRequestDetails> {
+): Promise<PullRequestDetailsOutput> {
   const response = await gitHubIntegration.pullRequests.getPullRequestDetails(
     owner,
     repositoryName,
@@ -40,7 +40,7 @@ export async function getPullRequestDetails(
 
   const isMerged = response.merged;
 
-  const pullRequestDetails = formatPullRequestDetailsOutput(response, isMerged);
+  const pullRequestDetails = pullRequestDetailsOutput(response, isMerged);
 
   return pullRequestDetails;
 }

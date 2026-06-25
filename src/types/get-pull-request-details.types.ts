@@ -1,4 +1,4 @@
-export type PullRequestDataInfo = {
+export type PullRequestDetailsData = {
   user: {
     login: string;
     id: number;
@@ -19,7 +19,7 @@ export type PullRequestDataInfo = {
   state: string;
 };
 
-export type FormattedPullRequestDetails = {
+export type PullRequestDetailsOutput = {
   from: string;
   number: number;
   url: string;

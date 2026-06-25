@@ -1,12 +1,12 @@
 import {
-  FormattedPullRequestDetails,
-  PullRequestDataInfo,
+  PullRequestDetailsData,
+  PullRequestDetailsOutput,
 } from '../types/get-pull-request-details.types.js';
 
-export function formatPullRequestDetailsOutput(
-  pullRequestData: PullRequestDataInfo,
+export function pullRequestDetailsOutput(
+  pullRequestData: PullRequestDetailsData,
   isMerged: boolean,
-): FormattedPullRequestDetails {
+): PullRequestDetailsOutput {
   const pullRequestDetails = {
     from: pullRequestData.user.login,
     number: pullRequestData.number,
