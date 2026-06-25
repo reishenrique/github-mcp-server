@@ -7,7 +7,7 @@ import { buildPullRequestInsights } from '../utils/builders/build-pull-request-i
 import { getRepositoryInfo } from './repositories.service.js';
 import { PullRequestDetailsOutput } from '../types/get-pull-request-details.types.js';
 import { CommitFilesOutput } from '../types/get-pull-request-files.types.js';
-import { PullRequestCommitOutput } from '../types/search-commits-by-pr.types.js';
+import { PullRequestCommitOutput } from '../types/search-commits-by-pull-request.types.js';
 import { SummarizePullRequestOutput } from '../types/summarize-pull-request.type.js';
 import {
   PullRequestContextReviewValue,

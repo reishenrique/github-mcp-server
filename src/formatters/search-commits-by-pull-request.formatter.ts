@@ -1,7 +1,7 @@
 import {
   PullRequestCommitData,
   PullRequestCommitOutput,
-} from '../types/search-commits-by-pr.types.js';
+} from '../types/search-commits-by-pull-request.types.js';
 import { detectMergeType } from '../utils/detect-merge-type.util.js';
 
 export function formatCommitsListOutput(
