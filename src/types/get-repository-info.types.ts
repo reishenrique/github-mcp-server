@@ -9,7 +9,7 @@ export type RepositoryData = {
   };
 };
 
-export type FormattedRepositoryInfoOutput = {
+export type RepositoryInfoOutput = {
   repositoryName: string;
   isPrivate: boolean;
   owner: string;

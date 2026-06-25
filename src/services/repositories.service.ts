@@ -3,12 +3,12 @@ import { issueDetailsOutput } from '../formatters/create-issue.formatter.js';
 import { formatGetRepositoryInfoOutput } from '../formatters/get-repository-info.formatter.js';
 import { gitHubIntegration } from '../integrations/github.integration.js';
 import { IssueDataOutput } from '../types/create-issue.types.js';
-import { FormattedRepositoryInfoOutput } from '../types/get-repository-info.types.js';
+import { RepositoryInfoOutput } from '../types/get-repository-info.types.js';
 
 export async function getRepositoryInfo(
   owner: string,
   repositoryName: string,
-): Promise<FormattedRepositoryInfoOutput> {
+): Promise<RepositoryInfoOutput> {
   const response = await gitHubApi.get(`/repos/${owner}/${repositoryName}`);
 
   const repositoryInfo = formatGetRepositoryInfoOutput(response.data);

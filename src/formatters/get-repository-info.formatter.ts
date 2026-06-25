@@ -1,11 +1,8 @@
-import {
-  RepositoryData,
-  FormattedRepositoryInfoOutput,
-} from '../types/get-repository-info.types.js';
+import { RepositoryData, RepositoryInfoOutput } from '../types/get-repository-info.types.js';
 
 export function formatGetRepositoryInfoOutput(
   repositoryData: RepositoryData,
-): FormattedRepositoryInfoOutput {
+): RepositoryInfoOutput {
   const repositoryInfo = {
     repositoryName: repositoryData.name,
     isPrivate: repositoryData.private,
