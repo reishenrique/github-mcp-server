@@ -8,7 +8,6 @@ import { registerSearchCommitsByPullRequestTool } from './tools/search-commits-b
 import { registerGetPullRequestFilesTool } from './tools/get-pull-request-files.tool.js';
 import { registerCreateIssueTool } from './tools/create-issue.tool.js';
 import { registerCreateCommentOnPullRequestTool } from './tools/create-comment-on-pull-request.tool.js';
-import { registerGenerateSummaryPullRequestTool } from './tools/generate-summary-pull-request.tool.js';
 import { registerSummaryPullRequestResource } from './resources/summary-pull-request.resource.js';
 import { registerGeneratePullRequestDescriptionTool } from './tools/generate-pull-request-description.tool.js';
 import { registerPullRequestReviewContextResource } from './resources/pull-request-review-context.resource.js';
@@ -28,7 +27,6 @@ async function startMcpServer() {
   registerGetPullRequestFilesTool(server);
   registerCreateIssueTool(server);
   registerCreateCommentOnPullRequestTool(server);
-  registerGenerateSummaryPullRequestTool(server);
   registerGeneratePullRequestDescriptionTool(server);
 
   // Resources
