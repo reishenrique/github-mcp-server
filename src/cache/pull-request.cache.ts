@@ -14,3 +14,10 @@ export type PullRequestContextReviewValue = {
 };
 
 export const pullRequestReviewContextCache = new Map<string, PullRequestContextReviewValue>();
+
+export type PullRequestReviewChecklistValue = {
+  reviewChecklist: string[];
+  generatedAt: string;
+};
+
+export const pullRequestReviewChecklistCache = new Map<string, PullRequestReviewChecklistValue>();
