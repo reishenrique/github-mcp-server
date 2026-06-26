@@ -26,6 +26,7 @@ import { PullRequestListDataOutput } from '../types/list-pull-request.types.js';
 import { buildReviewFocus } from '../utils/builders/build-review-focus.util.js';
 import { buildReviewSignals } from '../utils/builders/build-review-signals.util.js';
 import { PullRequestReviewContextOutput } from '../types/pull-request-review-context.type.js';
+import { buildReviewChecklist } from '../utils/builders/build-checklist-review.util.js';
 
 export async function getPullRequestDetails(
   owner: string,
@@ -236,3 +237,23 @@ export function savePullRequestReviewContextCache(
     generatedAt: new Date().toISOString(),
   });
 }
+
+export async function generatePullRequestReviewChecklist(
+  owner: string,
+  repositoryName: string,
+  pullRequestNumber: number,
+): Promise<string[]> {
+  const reviewContext = await getOrCreatePullRequestReviewContext(
+    owner,
+    repositoryName,
+    pullRequestNumber,
+  );
+
+  const { reviewFocus } = reviewContext;
+
+  const reviewChecklist = buildReviewChecklist(reviewFocus);
+
+  return reviewChecklist;
+}
+
+
