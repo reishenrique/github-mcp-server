@@ -11,6 +11,7 @@ import { registerCreateCommentOnPullRequestTool } from './tools/create-comment-o
 import { registerSummaryPullRequestResource } from './resources/summary-pull-request.resource.js';
 import { registerGeneratePullRequestDescriptionTool } from './tools/generate-pull-request-description.tool.js';
 import { registerPullRequestReviewContextResource } from './resources/pull-request-review-context.resource.js';
+import { registerPullRequestReviewChecklistResource } from './resources/pull-request-review-checklist.resource.js';
 
 async function startMcpServer() {
   const server = new McpServer({
@@ -32,6 +33,7 @@ async function startMcpServer() {
   // Resources
   registerSummaryPullRequestResource(server);
   registerPullRequestReviewContextResource(server);
+  registerPullRequestReviewChecklistResource(server);
 
   const transport = new StdioServerTransport();
   await server.connect(transport);
