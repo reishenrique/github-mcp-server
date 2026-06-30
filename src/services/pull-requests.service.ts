@@ -189,6 +189,7 @@ export async function listPullRequests(
   return pullRequests;
 }
 
+// Review Context
 export async function generatePullRequestReviewContext(
   owner: string,
   repositoryName: string,
@@ -242,22 +243,19 @@ export function savePullRequestReviewContextCache(
   });
 }
 
+// Review Checklist
 export async function generatePullRequestReviewChecklist(
   owner: string,
   repositoryName: string,
-  pullRequestNumber: number,
+  prNumber: number,
 ): Promise<PullRequestReviewChecklistOutput> {
-  const reviewContext = await getOrCreatePullRequestReviewContext(
-    owner,
-    repositoryName,
-    pullRequestNumber,
-  );
+  const reviewContext = await getOrCreatePullRequestReviewContext(owner, repositoryName, prNumber);
 
-  const { reviewFocus } = reviewContext;
+  const { reviewFocus, pullRequestNumber, pullRequestTitle } = reviewContext;
 
   const reviewChecklist = buildReviewChecklist(reviewFocus);
 
-  return { reviewChecklist };
+  return { reviewChecklist, pullRequestNumber, pullRequestTitle };
 }
 
 export function getCachedPullRequestReviewChecklist(
@@ -268,16 +266,16 @@ export function getCachedPullRequestReviewChecklist(
 
 export function savePullRequestReviewChecklistCache(
   cacheKey: string,
-  reviewChecklist: PullRequestReviewChecklistValue,
+  value: PullRequestReviewChecklistValue,
 ): void {
-  pullRequestReviewChecklistCache.set(cacheKey, reviewChecklist);
+  pullRequestReviewChecklistCache.set(cacheKey, value);
 }
 
 export async function getOrCreatePullRequestReviewChecklist(
   owner: string,
   repositoryName: string,
   pullRequestNumber: number,
-): Promise<PullRequestReviewChecklistOutput> {
+): Promise<PullRequestReviewChecklistValue> {
   const cacheKey = buildPullRequestReviewChecklistCacheKey(
     owner,
     repositoryName,
@@ -286,18 +284,16 @@ export async function getOrCreatePullRequestReviewChecklist(
 
   const cachedReviewChecklist = getCachedPullRequestReviewChecklist(cacheKey);
 
-  if (cachedReviewChecklist) return cachedReviewChecklist.reviewChecklist;
+  if (cachedReviewChecklist) return cachedReviewChecklist;
 
-  const reviewChecklist = await generatePullRequestReviewChecklist(
-    owner,
-    repositoryName,
-    pullRequestNumber,
-  );
+  const output = await generatePullRequestReviewChecklist(owner, repositoryName, pullRequestNumber);
 
-  savePullRequestReviewChecklistCache(cacheKey, {
-    reviewChecklist,
+  const value = {
+    output,
     generatedAt: new Date().toISOString(),
-  });
+  };
 
-  return reviewChecklist;
+  savePullRequestReviewChecklistCache(cacheKey, value);
+
+  return value;
 }
