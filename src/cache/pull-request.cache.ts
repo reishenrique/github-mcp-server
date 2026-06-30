@@ -17,7 +17,7 @@ export type PullRequestContextReviewValue = {
 export const pullRequestReviewContextCache = new Map<string, PullRequestContextReviewValue>();
 
 export type PullRequestReviewChecklistValue = {
-  reviewChecklist: PullRequestReviewChecklistOutput;
+  output: PullRequestReviewChecklistOutput;
   generatedAt: string;
 };
 
