@@ -11,10 +11,13 @@ import { PullRequestCommitOutput } from '../types/search-commits-by-pull-request
 import { SummarizePullRequestOutput } from '../types/summarize-pull-request.type.js';
 import {
   PullRequestContextReviewValue,
+  pullRequestReviewChecklistCache,
+  PullRequestReviewChecklistValue,
   pullRequestReviewContextCache,
   summaryPullRequestCache,
 } from '../cache/pull-request.cache.js';
 import {
+  buildPullRequestReviewChecklistCacheKey,
   buildPullRequestReviewContextCacheKey,
   buildSummaryPullRequestCacheKey,
 } from '../utils/builders/build-pull-request-cache-keys.util.js';
@@ -27,6 +30,7 @@ import { buildReviewFocus } from '../utils/builders/build-review-focus.util.js';
 import { buildReviewSignals } from '../utils/builders/build-review-signals.util.js';
 import { PullRequestReviewContextOutput } from '../types/pull-request-review-context.type.js';
 import { buildReviewChecklist } from '../utils/builders/build-checklist-review.util.js';
+import { PullRequestReviewChecklistOutput } from '../types/pull-request-review-checklist.type.js';
 
 export async function getPullRequestDetails(
   owner: string,
@@ -242,7 +246,7 @@ export async function generatePullRequestReviewChecklist(
   owner: string,
   repositoryName: string,
   pullRequestNumber: number,
-): Promise<string[]> {
+): Promise<PullRequestReviewChecklistOutput> {
   const reviewContext = await getOrCreatePullRequestReviewContext(
     owner,
     repositoryName,
@@ -253,7 +257,47 @@ export async function generatePullRequestReviewChecklist(
 
   const reviewChecklist = buildReviewChecklist(reviewFocus);
 
-  return reviewChecklist;
+  return { reviewChecklist };
 }
 
+export function getCachedPullRequestReviewChecklist(
+  cacheKey: string,
+): PullRequestReviewChecklistValue | undefined {
+  return pullRequestReviewChecklistCache.get(cacheKey);
+}
 
+export function savePullRequestReviewChecklistCache(
+  cacheKey: string,
+  reviewChecklist: PullRequestReviewChecklistValue,
+): void {
+  pullRequestReviewChecklistCache.set(cacheKey, reviewChecklist);
+}
+
+export async function getOrCreatePullRequestReviewChecklist(
+  owner: string,
+  repositoryName: string,
+  pullRequestNumber: number,
+): Promise<PullRequestReviewChecklistOutput> {
+  const cacheKey = buildPullRequestReviewChecklistCacheKey(
+    owner,
+    repositoryName,
+    pullRequestNumber,
+  );
+
+  const cachedReviewChecklist = getCachedPullRequestReviewChecklist(cacheKey);
+
+  if (cachedReviewChecklist) return cachedReviewChecklist.reviewChecklist;
+
+  const reviewChecklist = await generatePullRequestReviewChecklist(
+    owner,
+    repositoryName,
+    pullRequestNumber,
+  );
+
+  savePullRequestReviewChecklistCache(cacheKey, {
+    reviewChecklist,
+    generatedAt: new Date().toISOString(),
+  });
+
+  return reviewChecklist;
+}
