@@ -11,10 +11,13 @@ import { PullRequestCommitOutput } from '../types/search-commits-by-pull-request
 import { SummarizePullRequestOutput } from '../types/summarize-pull-request.type.js';
 import {
   PullRequestContextReviewValue,
+  pullRequestReviewChecklistCache,
+  PullRequestReviewChecklistValue,
   pullRequestReviewContextCache,
   summaryPullRequestCache,
 } from '../cache/pull-request.cache.js';
 import {
+  buildPullRequestReviewChecklistCacheKey,
   buildPullRequestReviewContextCacheKey,
   buildSummaryPullRequestCacheKey,
 } from '../utils/builders/build-pull-request-cache-keys.util.js';
@@ -26,6 +29,8 @@ import { PullRequestListDataOutput } from '../types/list-pull-request.types.js';
 import { buildReviewFocus } from '../utils/builders/build-review-focus.util.js';
 import { buildReviewSignals } from '../utils/builders/build-review-signals.util.js';
 import { PullRequestReviewContextOutput } from '../types/pull-request-review-context.type.js';
+import { buildReviewChecklist } from '../utils/builders/build-checklist-review.util.js';
+import { PullRequestReviewChecklistOutput } from '../types/pull-request-review-checklist.type.js';
 
 export async function getPullRequestDetails(
   owner: string,
@@ -184,6 +189,7 @@ export async function listPullRequests(
   return pullRequests;
 }
 
+// Review Context
 export async function generatePullRequestReviewContext(
   owner: string,
   repositoryName: string,
@@ -235,4 +241,59 @@ export function savePullRequestReviewContextCache(
     reviewContext,
     generatedAt: new Date().toISOString(),
   });
+}
+
+// Review Checklist
+export async function generatePullRequestReviewChecklist(
+  owner: string,
+  repositoryName: string,
+  prNumber: number,
+): Promise<PullRequestReviewChecklistOutput> {
+  const reviewContext = await getOrCreatePullRequestReviewContext(owner, repositoryName, prNumber);
+
+  const { reviewFocus, pullRequestNumber, pullRequestTitle } = reviewContext;
+
+  const reviewChecklist = buildReviewChecklist(reviewFocus);
+
+  return { reviewChecklist, pullRequestNumber, pullRequestTitle };
+}
+
+export function getCachedPullRequestReviewChecklist(
+  cacheKey: string,
+): PullRequestReviewChecklistValue | undefined {
+  return pullRequestReviewChecklistCache.get(cacheKey);
+}
+
+export function savePullRequestReviewChecklistCache(
+  cacheKey: string,
+  value: PullRequestReviewChecklistValue,
+): void {
+  pullRequestReviewChecklistCache.set(cacheKey, value);
+}
+
+export async function getOrCreatePullRequestReviewChecklist(
+  owner: string,
+  repositoryName: string,
+  pullRequestNumber: number,
+): Promise<PullRequestReviewChecklistValue> {
+  const cacheKey = buildPullRequestReviewChecklistCacheKey(
+    owner,
+    repositoryName,
+    pullRequestNumber,
+  );
+
+  const cachedReviewChecklist = getCachedPullRequestReviewChecklist(cacheKey);
+
+  if (cachedReviewChecklist) return cachedReviewChecklist;
+
+  const output = await generatePullRequestReviewChecklist(owner, repositoryName, pullRequestNumber);
+
+  const value = {
+    output,
+    generatedAt: new Date().toISOString(),
+  };
+
+  savePullRequestReviewChecklistCache(cacheKey, value);
+
+  return value;
 }
