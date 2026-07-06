@@ -27,7 +27,7 @@ import {
 import { createCommentOnPullRequestOutput } from '../formatters/create-comment-on-pull-request.formatter.js';
 import { buildPullRequestImpactSummary } from '../utils/builders/build-pull-request-affected-areas.util.js';
 import { gitHubIntegration } from '../integrations/github.integration.js';
-import { pullRequestListOutput } from '../formatters/list-pull-request.formatters.js';
+import { pullRequestListOutput } from '../formatters/list-pull-request.formatter.js';
 import { PullRequestListDataOutput } from '../types/list-pull-request.types.js';
 import { buildReviewFocus } from '../utils/builders/build-review-focus.util.js';
 import { buildReviewSignals } from '../utils/builders/build-review-signals.util.js';
@@ -331,7 +331,7 @@ export function getCachedPullRequestReviewStrategy(
 export function savePullRequestReviewStrategy(
   cacheKey: string,
   value: PullRequestReviewStrategyValue,
-) {
+): void {
   pullRequestReviewStrategyCache.set(cacheKey, value);
 }
 
