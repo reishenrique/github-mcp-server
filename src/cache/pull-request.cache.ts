@@ -1,5 +1,6 @@
 import { PullRequestReviewChecklistOutput } from '../types/pull-request-review-checklist.type.js';
 import { PullRequestReviewContextOutput } from '../types/pull-request-review-context.type.js';
+import { PullRequestReviewStrategyOutput } from '../types/pull-request-review-strategy.type.js';
 import { SummarizePullRequestOutput } from '../types/summarize-pull-request.type.js';
 
 export type SummarizePullRequestCacheValue = {
@@ -22,3 +23,10 @@ export type PullRequestReviewChecklistValue = {
 };
 
 export const pullRequestReviewChecklistCache = new Map<string, PullRequestReviewChecklistValue>();
+
+export type PullRequestReviewStrategyValue = {
+  output: PullRequestReviewStrategyOutput;
+  generatedAt: string;
+};
+
+export const pullRequestReviewStrategyCache = new Map<string, PullRequestReviewStrategyValue>();
