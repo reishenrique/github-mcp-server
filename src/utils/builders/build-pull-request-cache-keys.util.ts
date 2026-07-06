@@ -19,5 +19,13 @@ export function buildPullRequestReviewChecklistCacheKey(
   repositoryName: string,
   pullRequestNumber: number,
 ): string {
-  return `reviewChecklsit:${owner}-${repositoryName}-${pullRequestNumber}`;
+  return `reviewChecklist:${owner}-${repositoryName}-${pullRequestNumber}`;
+}
+
+export function buildPullRequestReviewStrategyCacheKey(
+  owner: string,
+  repositoryName: string,
+  pullRequestNumber: number,
+): string {
+  return `reviewStrategy:${owner}-${repositoryName}-${pullRequestNumber}`;
 }
