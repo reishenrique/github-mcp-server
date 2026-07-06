@@ -21,6 +21,7 @@ import {
 import {
   buildPullRequestReviewChecklistCacheKey,
   buildPullRequestReviewContextCacheKey,
+  buildPullRequestReviewStrategyCacheKey,
   buildSummaryPullRequestCacheKey,
 } from '../utils/builders/build-pull-request-cache-keys.util.js';
 import { createCommentOnPullRequestOutput } from '../formatters/create-comment-on-pull-request.formatter.js';
@@ -334,4 +335,25 @@ export function savePullRequestReviewStrategy(
   pullRequestReviewStrategyCache.set(cacheKey, value);
 }
 
-export async function getOrCreatePullRequestReviewStrategy() {}
+export async function getOrCreatePullRequestReviewStrategy(
+  owner: string,
+  repositoryName: string,
+  pullRequestNumber: number,
+): Promise<PullRequestReviewStrategyValue> {
+  const cacheKey = buildPullRequestReviewStrategyCacheKey(owner, repositoryName, pullRequestNumber);
+
+  const cachedReviewStrategy = getCachedPullRequestReviewStrategy(cacheKey);
+
+  if (cachedReviewStrategy) return cachedReviewStrategy;
+
+  const output = await generatePullRequestReviewStrategy(owner, repositoryName, pullRequestNumber);
+
+  const value = {
+    output,
+    generatedAt: new Date().toISOString(),
+  };
+
+  savePullRequestReviewStrategy(cacheKey, value);
+
+  return value;
+}
