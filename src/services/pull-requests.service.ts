@@ -315,7 +315,11 @@ export async function generatePullRequestReviewStrategy(
   const reviewChecklist = pullRequestReviewChecklist.output.reviewChecklist;
 }
 
-export function getCachedPullRequestReviewStrategy() {}
+export function getCachedPullRequestReviewStrategy(
+  cacheKey: string,
+): PullRequestReviewStrategyValue | undefined {
+  return pullRequestReviewStrategyCache.get(cacheKey);
+}
 
 export function savePullRequestReviewStrategy(
   cacheKey: string,
