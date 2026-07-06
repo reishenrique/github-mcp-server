@@ -33,6 +33,8 @@ import { buildReviewSignals } from '../utils/builders/build-review-signals.util.
 import { PullRequestReviewContextOutput } from '../types/pull-request-review-context.type.js';
 import { buildReviewChecklist } from '../utils/builders/build-checklist-review.util.js';
 import { PullRequestReviewChecklistOutput } from '../types/pull-request-review-checklist.type.js';
+import { buildReviewStrategy } from '../utils/builders/build-review-strategy.util.js';
+import { PullRequestReviewStrategyOutput } from '../types/pull-request-review-strategy.type.js';
 
 export async function getPullRequestDetails(
   owner: string,
@@ -305,14 +307,18 @@ export async function generatePullRequestReviewStrategy(
   owner: string,
   repositoryName: string,
   pullRequestNumber: number,
-) {
-  const pullRequestReviewChecklist = await getOrCreatePullRequestReviewChecklist(
+): Promise<PullRequestReviewStrategyOutput> {
+  const pullRequestReviewChecklist = await getOrCreatePullRequestReviewContext(
     owner,
     repositoryName,
     pullRequestNumber,
   );
 
-  const reviewChecklist = pullRequestReviewChecklist.output.reviewChecklist;
+  const { reviewFocus, pullRequestTitle } = pullRequestReviewChecklist;
+
+  const reviewStrategy = buildReviewStrategy(reviewFocus);
+
+  return { reviewStrategy, pullRequestNumber, pullRequestTitle };
 }
 
 export function getCachedPullRequestReviewStrategy(
