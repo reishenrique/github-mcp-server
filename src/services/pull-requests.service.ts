@@ -14,6 +14,8 @@ import {
   pullRequestReviewChecklistCache,
   PullRequestReviewChecklistValue,
   pullRequestReviewContextCache,
+  pullRequestReviewStrategyCache,
+  PullRequestReviewStrategyValue,
   summaryPullRequestCache,
 } from '../cache/pull-request.cache.js';
 import {
@@ -297,3 +299,29 @@ export async function getOrCreatePullRequestReviewChecklist(
 
   return value;
 }
+
+// Review Strategy
+export async function generatePullRequestReviewStrategy(
+  owner: string,
+  repositoryName: string,
+  pullRequestNumber: number,
+) {
+  const pullRequestReviewChecklist = await getOrCreatePullRequestReviewChecklist(
+    owner,
+    repositoryName,
+    pullRequestNumber,
+  );
+
+  const reviewChecklist = pullRequestReviewChecklist.output.reviewChecklist;
+}
+
+export function getCachedPullRequestReviewStrategy() {}
+
+export function savePullRequestReviewStrategy(
+  cacheKey: string,
+  value: PullRequestReviewStrategyValue,
+) {
+  pullRequestReviewStrategyCache.set(cacheKey, value);
+}
+
+export async function getOrCreatePullRequestReviewStrategy() {}
