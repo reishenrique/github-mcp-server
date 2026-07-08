@@ -14,23 +14,28 @@ import {
   pullRequestReviewChecklistCache,
   PullRequestReviewChecklistValue,
   pullRequestReviewContextCache,
+  pullRequestReviewStrategyCache,
+  PullRequestReviewStrategyValue,
   summaryPullRequestCache,
 } from '../cache/pull-request.cache.js';
 import {
   buildPullRequestReviewChecklistCacheKey,
   buildPullRequestReviewContextCacheKey,
+  buildPullRequestReviewStrategyCacheKey,
   buildSummaryPullRequestCacheKey,
 } from '../utils/builders/build-pull-request-cache-keys.util.js';
 import { createCommentOnPullRequestOutput } from '../formatters/create-comment-on-pull-request.formatter.js';
 import { buildPullRequestImpactSummary } from '../utils/builders/build-pull-request-affected-areas.util.js';
 import { gitHubIntegration } from '../integrations/github.integration.js';
-import { pullRequestListOutput } from '../formatters/list-pull-request.formatters.js';
+import { pullRequestListOutput } from '../formatters/list-pull-request.formatter.js';
 import { PullRequestListDataOutput } from '../types/list-pull-request.types.js';
 import { buildReviewFocus } from '../utils/builders/build-review-focus.util.js';
 import { buildReviewSignals } from '../utils/builders/build-review-signals.util.js';
 import { PullRequestReviewContextOutput } from '../types/pull-request-review-context.type.js';
 import { buildReviewChecklist } from '../utils/builders/build-checklist-review.util.js';
 import { PullRequestReviewChecklistOutput } from '../types/pull-request-review-checklist.type.js';
+import { buildReviewStrategy } from '../utils/builders/build-review-strategy.util.js';
+import { PullRequestReviewStrategyOutput } from '../types/pull-request-review-strategy.type.js';
 
 export async function getPullRequestDetails(
   owner: string,
@@ -294,6 +299,61 @@ export async function getOrCreatePullRequestReviewChecklist(
   };
 
   savePullRequestReviewChecklistCache(cacheKey, value);
+
+  return value;
+}
+
+// Review Strategy
+export async function generatePullRequestReviewStrategy(
+  owner: string,
+  repositoryName: string,
+  pullRequestNumber: number,
+): Promise<PullRequestReviewStrategyOutput> {
+  const pullRequestReviewChecklist = await getOrCreatePullRequestReviewContext(
+    owner,
+    repositoryName,
+    pullRequestNumber,
+  );
+
+  const { reviewFocus, pullRequestTitle } = pullRequestReviewChecklist;
+
+  const reviewStrategy = buildReviewStrategy(reviewFocus);
+
+  return { reviewStrategy, pullRequestNumber, pullRequestTitle };
+}
+
+export function getCachedPullRequestReviewStrategy(
+  cacheKey: string,
+): PullRequestReviewStrategyValue | undefined {
+  return pullRequestReviewStrategyCache.get(cacheKey);
+}
+
+export function savePullRequestReviewStrategy(
+  cacheKey: string,
+  value: PullRequestReviewStrategyValue,
+): void {
+  pullRequestReviewStrategyCache.set(cacheKey, value);
+}
+
+export async function getOrCreatePullRequestReviewStrategy(
+  owner: string,
+  repositoryName: string,
+  pullRequestNumber: number,
+): Promise<PullRequestReviewStrategyValue> {
+  const cacheKey = buildPullRequestReviewStrategyCacheKey(owner, repositoryName, pullRequestNumber);
+
+  const cachedReviewStrategy = getCachedPullRequestReviewStrategy(cacheKey);
+
+  if (cachedReviewStrategy) return cachedReviewStrategy;
+
+  const output = await generatePullRequestReviewStrategy(owner, repositoryName, pullRequestNumber);
+
+  const value = {
+    output,
+    generatedAt: new Date().toISOString(),
+  };
+
+  savePullRequestReviewStrategy(cacheKey, value);
 
   return value;
 }
