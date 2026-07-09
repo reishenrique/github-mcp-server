@@ -194,6 +194,7 @@ Before running the project, make sure you have the following installed:
 - Node.js 20+
 - npm
 - A GitHub Personal Access Token (PAT)
+- GitHub API URL
 
 ---
 
@@ -225,6 +226,7 @@ Create a `.env` file in the project root.
 
 ```env
 GITHUB_TOKEN=your_personal_access_token
+GITHUB_API_URL=https://api.github.com
 ```
 
 ## GitHub Token
