@@ -134,18 +134,6 @@ Resources build upon previous resources.
 
 Instead of recalculating GitHub information multiple times, each resource enriches previously generated knowledge.
 
-```mermaid
-flowchart LR
-
-GitHub --> Summary
-
-Summary --> ReviewContext
-
-ReviewContext --> Checklist
-
-ReviewContext --> Strategy
-```
-
 ---
 
 ## Engineering-Oriented Outputs
