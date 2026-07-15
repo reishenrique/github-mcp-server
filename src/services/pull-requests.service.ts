@@ -36,6 +36,8 @@ import { buildReviewChecklist } from '../utils/builders/build-checklist-review.u
 import { PullRequestReviewChecklistOutput } from '../types/pull-request-review-checklist.type.js';
 import { buildReviewStrategy } from '../utils/builders/build-review-strategy.util.js';
 import { PullRequestReviewStrategyOutput } from '../types/pull-request-review-strategy.type.js';
+import { buildBulletList } from '../utils/builders/build-bullet-list.util.js';
+import { buildPullRequestDescriptionTemplate } from '../utils/templates/tools/pull-request-description-template.tool-template.js';
 
 export async function getPullRequestDetails(
   owner: string,
@@ -192,6 +194,28 @@ export async function listPullRequests(
   const pullRequests = pullRequestListOutput(response);
 
   return pullRequests;
+}
+
+export async function generatePullRequestDescription(
+  owner: string,
+  repisitoryName: string,
+  pullRequestNumber: number,
+): Promise<string> {
+  const summary = await getOrCreateSummarizePullRequest(owner, repisitoryName, pullRequestNumber);
+
+  const impactSummary = buildPullRequestImpactSummary(summary.changedFiles);
+
+  const risks = buildBulletList(summary.risks, 'No significant risks detected');
+  const recommendations = buildBulletList(summary.recommendations, 'No recommendations');
+
+  const description = buildPullRequestDescriptionTemplate({
+    summary,
+    impactSummary,
+    risks,
+    recommendations,
+  });
+
+  return description;
 }
 
 // Review Context

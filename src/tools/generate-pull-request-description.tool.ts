@@ -1,9 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp';
 import { z } from 'zod';
-import { getOrCreateSummarizePullRequest } from '../services/pull-requests.service.js';
-import { buildPullRequestDescriptionTemplate } from '../utils/templates/tools/pull-request-description-template.tool-template.js';
-import { buildBulletList } from '../utils/builders/build-bullet-list.util.js';
-import { buildPullRequestImpactSummary } from '../utils/builders/build-pull-request-affected-areas.util.js';
+import { generatePullRequestDescription } from '../services/pull-requests.service.js';
 
 const inputSchema = z.object({
   owner: z.string(),
@@ -20,23 +17,11 @@ export function registerGeneratePullRequestDescriptionTool(server: McpServer) {
       inputSchema: inputSchema.shape,
     },
     async ({ owner, repositoryName, pullRequestNumber }: z.infer<typeof inputSchema>) => {
-      const summary = await getOrCreateSummarizePullRequest(
+      const description = await generatePullRequestDescription(
         owner,
         repositoryName,
         pullRequestNumber,
       );
-
-      const impactSummary = buildPullRequestImpactSummary(summary.changedFiles);
-
-      const risks = buildBulletList(summary.risks, 'No significant risks detected');
-      const recommendations = buildBulletList(summary.recommendations, 'No recommendations');
-
-      const description = buildPullRequestDescriptionTemplate({
-        summary,
-        impactSummary,
-        risks,
-        recommendations,
-      });
 
       return {
         structuredContent: { description },
