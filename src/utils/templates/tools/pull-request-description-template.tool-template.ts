@@ -6,7 +6,7 @@ export function buildPullRequestDescriptionTemplate(data: {
   impactSummary: string[];
   risks: string;
   recommendations: string;
-}) {
+}): string {
   return `
 ## 📋 Pull Request Summary
 
